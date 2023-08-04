@@ -1,4 +1,4 @@
-# 🪖 Typed2.js 🪖
+# 🪖 BTyped2.js 🪖
 
 🪖 A typed structure library (mostly, for NodeJS)... 🪖
 
