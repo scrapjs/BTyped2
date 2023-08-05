@@ -8,4 +8,4 @@ import MemoryPool from "./lib/MemoryPool.mjs";
 
 //
 export {ArrayLayout, StructLayout, ArrayView, StructView, StructWrap, ProxyHandle, MemoryPool};
-export * from "./lib/ArrayView.mjs";
+export * from "./lib/ArrayLayout.mjs";
