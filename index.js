@@ -3,11 +3,8 @@ import StructLayout from "./lib/StructLayout.mjs";
 import ArrayView from "./lib/ArrayView.mjs";
 import StructView from "./lib/StructView.mjs";
 import ProxyHandle from "./lib/ProxyHandle.mjs";
-
-//
-export const StructWrap = ($layout)=>{
-    return new Proxy(function _STRUCT_(){}, new ProxyHandle($layout));
-}
+import { StructWrap } from "./lib/ProxyHandle.mjs";
 
 //
 export {ArrayLayout, StructLayout, ArrayView, StructView, StructWrap, ProxyHandle};
+export * from "./lib/ArrayView.mjs";
