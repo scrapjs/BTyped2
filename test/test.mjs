@@ -9,10 +9,10 @@ const Test = B.StructWrap(new B.StructLayout("Test", {
 const AB = new ArrayBuffer(256);
 
 //
-const I = new Test({
+const I = (new Test({
     field0: 1,
     field1: [2, 3]
-});
+}))[0];
 
 //I.field0 = 1;
 //I.field1 = [2, 3];
