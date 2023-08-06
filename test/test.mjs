@@ -20,4 +20,5 @@ const I = (new Test({
 console.log(I);
 console.log(I.field0);
 console.log(I.field1[0], I.field1[1]);
+console.log(I["field1:uint16"]); // че ты несешь?
 console.log(I.field1);
