@@ -30,6 +30,7 @@
   "dependencies": {
     "@msgpack/msgpack": "^3.0.0-beta2",
     "@petamoriken/float16": "^3.8.1",
+    "@rgrove/parse-xml": "^4.1.0",
     "crc-32": "^1.2.2",
     "crc32": "^0.2.2",
     "harmony-reflect": "^1.6.2",
