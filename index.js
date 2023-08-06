@@ -1,3 +1,4 @@
+//
 import ArrayLayout from "./lib/ArrayLayout.mjs";
 import StructLayout from "./lib/StructLayout.mjs";
 import ArrayView from "./lib/ArrayView.mjs";
@@ -9,5 +10,9 @@ import MemoryPool from "./lib/MemoryPool.mjs";
 import TypeAlias from "./lib/TypeAlias.mjs";
 
 //
-export {ArrayLayout, StructLayout, ArrayView, StructView, StructWrap, ProxyHandle, StructType, MemoryPool, TypeAlias};
+import WrapXML from "./lib/XMLHandler.mjs";
+import { XMLHandler } from "./lib/XMLHandler.mjs";
+
+//
+export {ArrayLayout, StructLayout, ArrayView, StructView, StructWrap, ProxyHandle, StructType, MemoryPool, TypeAlias, WrapXML, XMLHandler};
 export * from "./lib/ArrayLayout.mjs";
