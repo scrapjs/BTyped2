@@ -23,7 +23,8 @@ export default defineConfig(({ command, mode }) => {
             },
           },
         },
-        include: ["src/**/*", "src/*", "deps/**/*", "deps/*", "*", "node_modules", "node_modules/*", "node_modules/**/*"],
+        include: ["src/**/*", "src/*", "*"],
+        server: { fs: { allow: ['./','./deps','../']} },
         resolve: {
           alias: {
             "src": fileURLToPath(new URL("./src/", import.meta.url)),
