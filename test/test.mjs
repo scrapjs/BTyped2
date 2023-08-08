@@ -1,5 +1,6 @@
-import * as B from "../index.js";
+import * as B from "../src/index.mjs";
 
+//
 const Test = B.StructWrap(new B.StructLayout("Test", {
     field0: "uint8",
     field1: "uint8[2]"

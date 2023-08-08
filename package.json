@@ -2,7 +2,7 @@
   "name": "framelib",
   "version": "1.0.0",
   "description": "Library for decoders...",
-  "main": "index.js",
+  "main": "index.mjs",
   "directories": {
     "lib": "lib",
     "test": "test"
