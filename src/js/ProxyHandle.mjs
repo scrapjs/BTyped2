@@ -33,12 +33,12 @@ export default class ProxyHandle {
         if (name == "$auto") { return $layout.$auto; };
 
         // internal functors
-        if (name == "$select") { return $view.$select.bind($view); };
-        if (name == "$set") { return $view.$set.bind($view); };
-        if (name == "$get") { return $view.$get.bind($view); };
-        
+        if (name == "$select") { return $view.$select?.bind?.($view); };
+        if (name == "$set") { return $view.$set?.bind?.($view); };
+        if (name == "$get") { return $view.$get?.bind?.($view); };
+
         //
-        return $view.$get(name);
+        return $view?.$get?.(name);
     }
 
     // when wrapped from DataView
