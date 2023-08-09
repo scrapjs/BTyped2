@@ -21,5 +21,10 @@ const I = (new Test({
 console.log(I);
 console.log(I.field0);
 console.log(I.field1[0], I.field1[1]);
-console.log(I["field1:uint16"]); // че ты несешь?
+console.log(I["field1:uint16"]); // type-cast getter
 console.log(I.field1);
+
+// type casted assign
+I[0] = { "field0:uint16": 0xffff };
+console.log(I.field0);
+console.log(I.field1[0], I.field1[1]);
