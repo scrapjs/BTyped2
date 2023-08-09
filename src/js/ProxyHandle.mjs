@@ -31,6 +31,13 @@ export default class ProxyHandle {
         if (name == "$isView") { return true; };
         if (name == "$address") { return BigInt($view.$address); };
         if (name == "$auto") { return $layout.$auto; };
+
+        // internal functors
+        if (name == "$select") { return $view.$select.bind($view); };
+        if (name == "$set") { return $view.$set.bind($view); };
+        if (name == "$get") { return $view.$get.bind($view); };
+        
+        //
         return $view.$get(name);
     }
 

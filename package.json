@@ -37,6 +37,7 @@
     "indexeddb-fs": "^2.1.5",
     "vite": "^4.4.7",
     "vite-plugin-cross-origin-isolation": "^0.1.6",
+    "vite-plugin-pug": "^0.3.2",
     "vite-plugin-pwa": "^0.16.4"
   }
 }

@@ -67,7 +67,16 @@ export default class StructView {
 
         // assign members (if struct to struct, will try to recursively)
         const $T = $type.$name;
-        if (typeof $obj == "object" && typeof $member == "object") { Object.assign($obj, $member); return true; }
+
+        // optimized operation for array-view
+        if ((Array.isArray($member) || ArrayBuffer.isView($member)) && typeof $obj?.$select == "function") {
+            $obj.$set(0, $member); return true;
+        }
+
+        //
+        if (typeof $obj == "object" && typeof $member == "object") { 
+            Object.assign($obj, $member); return true;
+        }
 
         // set primitive
         if ((typeof $T == "string") && (typeof $member == "number" || typeof $member == "bigint")) 

@@ -12,14 +12,14 @@ export default defineConfig(({ command, mode }) => {
     return {
         // vite config
         port: 4000,
-        base: "./src/",
-        root: "./src/",
+        base: "./test/",
+        root: "./test/",
         build: {
           outDir: './dist/',
           rollupOptions: {
             input: {
               // need a better way to template
-              main: "./src/index.html",
+              main: "./test/index.html",
             },
           },
         },
