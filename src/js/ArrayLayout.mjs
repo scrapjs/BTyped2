@@ -1,3 +1,4 @@
+import { Float16Array } from "@petamoriken/float16";
 import ArrayView from "./ArrayView.mjs";
 import ProxyHandle from "./ProxyHandle.mjs";
 import { StructWrap } from "./ProxyHandle.mjs";
@@ -5,13 +6,15 @@ import { CTypes } from "./Utils.mjs";
 
 //
 export default class ArrayLayout {
-    #typed = "";
+    #typed = "uint8";
     #byteLength = 1;
+    #classOf = Uint8Array;
 
     //
-    constructor(typed, byteLength = 1) {
+    constructor(typed = "uint8", byteLength = 1, classOf = Uint8Array) {
         this.#typed = typed;
         this.#byteLength = byteLength;
+        this.#classOf = classOf;
 
         //
         if (this.#typed) { CTypes[this.#typed] = this; };
@@ -20,6 +23,7 @@ export default class ArrayLayout {
     //
     get $byteLength() { return this.#byteLength; };
     get $typed() { return this.#typed; };
+    get $classOf() { return this.#classOf; };
 
     //
     $view(target, byteOffset = 0, length = 1) { return new ArrayView(this, target, byteOffset, length); }
@@ -47,14 +51,14 @@ export default class ArrayLayout {
 };
 
 //
-export const BigUint64View = StructWrap(new ArrayLayout("uint64", 8));
-export const BigInt64View = StructWrap(new ArrayLayout("int64", 8));
-export const Float64View = StructWrap(new ArrayLayout("float64", 8));
-export const Uint32View = StructWrap(new ArrayLayout("uint32", 4));
-export const Int32View = StructWrap(new ArrayLayout("int32", 4));
-export const Float32View = StructWrap(new ArrayLayout("float32", 4));
-export const Uint16View = StructWrap(new ArrayLayout("uint16", 2));
-export const Int16View = StructWrap(new ArrayLayout("int16", 2));
-export const Float16View = StructWrap(new ArrayLayout("float16", 2));
-export const Uint8View = StructWrap(new ArrayLayout("uint8", 1));
-export const Int8View = StructWrap(new ArrayLayout("int8", 1));
+export const BigUint64View = StructWrap(new ArrayLayout("uint64", 8, BigUint64Array));
+export const BigInt64View = StructWrap(new ArrayLayout("int64", 8, BigInt64Array));
+export const Float64View = StructWrap(new ArrayLayout("float64", 8, Float64Array));
+export const Uint32View = StructWrap(new ArrayLayout("uint32", 4, Uint32Array));
+export const Int32View = StructWrap(new ArrayLayout("int32", 4, Int32Array));
+export const Float32View = StructWrap(new ArrayLayout("float32", 4, Float32Array));
+export const Uint16View = StructWrap(new ArrayLayout("uint16", 2, Uint16Array));
+export const Int16View = StructWrap(new ArrayLayout("int16", 2, Int16Array));
+export const Float16View = StructWrap(new ArrayLayout("float16", 2, Float16Array));
+export const Uint8View = StructWrap(new ArrayLayout("uint8", 1, Uint8Array));
+export const Int8View = StructWrap(new ArrayLayout("int8", 1, Int8Array));

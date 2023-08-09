@@ -45,11 +45,23 @@ export default class ArrayView {
         return $target["get" + ($name.includes("int64") ? "Big" : "") + ($name.charAt(0).toUpperCase() + $name.slice(1))]($index * $memT.$byteLength + this.#byteOffset, true);
     }
 
+    //
+    $select($index = 0, $length = 1) {
+        return new this.#layout.$classOf(this.$buffer, $index * this.#layout.$byteLength + this.#byteOffset + (this.$target?.byteOffset || 0), Math.min($length, this.$length - $index));
+    }
+
     // 
-    $set($index, $member = 0) {
+    $set($index = 0, $member = 0) {
+        //
         $index = parseInt($index);
         const $name = this.#layout.$typed;
         const $memT = this.#layout;
+
+        // optimized operation
+        if (Array.isArray($member) || ArrayBuffer.isView($member)) {
+            this.$select($index, $member.length).set($member);
+            return true;
+        }
 
         // assign members (if struct to struct, will try to recursively)
         if ($name?.includes?.("int64")) { $member = AsBigInt($member); }
