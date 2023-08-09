@@ -42,10 +42,11 @@ export default class ArrayLayout {
 
     // 
     $create(objOrLength = 1, length = null) {
-        const obj = Array.isArray(length) ? objOrLength : null; length ??= (obj ? 1 : objOrLength);
+        const obj = Array.isArray(length) ? objOrLength : null; length ??= (obj ? obj?.length : objOrLength) || 1;
         const ab = new (typeof SharedArrayBuffer != "undefined" ? SharedArrayBuffer : ArrayBuffer)(length * this.#byteLength);
         const px = new Proxy(this.$view(ab, 0, length), new ProxyHandle(this)).$initial;
-        if (obj != null) { Object.assign(px, obj); };
+        //if (obj != null) { Object.assign(px, obj); };
+        if (obj != null) { px[0] = obj; }; // use optimized version
         return px;
     }
 };
