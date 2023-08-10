@@ -28,54 +28,19 @@ export default class StructLayout {
     $view(target, byteOffset = 0, length = 1) { return new StructView(this, target, byteOffset, length); }
     #wrap(buffer, byteOffset = 0, length = 1) { return new Proxy(this.$view(buffer, byteOffset, length), new ProxyHandle(this)); }
 
-    //
-    $parse($name) {
-        //
-        let $array = false;
-        let $offset = 0;
-        let $default = 0;
-
-        //
-        if ($name?.indexOf?.(";") >= 0) { [$name, $default ] = $name.vsplit(";"); $name = $name.trim(), $default = $default ? JSON.parse($default.trim()) : 0; };
-
-        // 
-        if ($name.indexOf?.("[") >= 0 && $name.indexOf?.("]") >= 0) {
-            let $match = $name.match(/\[(-?\d+)\]/);
-            $array = ($match ? AsInt($match[1]) : 1) || 1;
-            $name = $name.replace(/\[\d+\]/g, "");
-        };
-
-        // 
-        if ($name.indexOf?.("(") >= 0 && $name.indexOf?.(")") >= 0) {
-            let $match = $name.match(/\((-?\d+)\)/);
-            $offset = ($match ? AsInt($match[1]) : 0) || 0;
-            $name = $name.replace(/\(\d+\)/g, "");
-        };
-
-        //
-        return new StructType($name, $offset, $array, $default);
-    }
-
-    // 
-    $typeof($mT) {
-        let $array = false;
-        let $offset = 0;
-        let $default = 0;
-
-        // default type
-        let $name = (this.$get($mT) ?? this);
+    // $fn - field name
+    $typeof($fn) {
+        let $array = false, $offset = 0, $default = 0, $name = "", $cvt = false;
 
         // make type conversion description
-        let $cvt = false;
-        if (typeof $mT == "string") {
-            if (($mT = $mT.trim()).indexOf(":") >= 0) { 
-                [$mT, $cvt ] = $mT.vsplit(":");
-                $cvt = $cvt .trim(), $mT = $mT.trim();
-            };
+        if (typeof $fn == "string" && ($fn = $fn.trim()).indexOf(":") >= 0) {
+            [ $fn, $cvt ] = $fn.vsplit(":");
+            $cvt = $cvt .trim(), $fn = $fn.trim();
         }
 
         // initial values
-        const $P = (typeof $name == "string") ? this.#layout.$parse($name.trim()) : $name;
+        const $T = (this.#layout[$fn] ?? this);
+        const $P = (typeof $T == "string") ? StructType.$parse($T.trim()) : $T;
         if ($P instanceof StructType) {
             $name    = ($P?.$name    || $name), 
             $default = ($P?.$default || $default), 
@@ -84,33 +49,18 @@ export default class StructLayout {
         };
 
         // convert type when assign, relative offset
+        if (typeof $name == "string") { $name = $name.trim(); };
         if (typeof $cvt == "string") {
-            const $P = this.$parse($cvt);
+            const $P = StructType.$parse($cvt);
             $name    = ($P?.$name    ?? $name), 
             $default = ($P?.$default ?? $default), 
             $array   = ($P?.$array   ?? $array);
             $offset += ($P?.$offset  || 0);
         };
 
-        // is inline array index access
-        const $index = parseInt($name) || 0; $name ??= this.#layout;
-
         // if is "StructType", it should to be already a defined
-        return new StructType($name, $offset, $array, $default, $index);
-    }
-
-    //
-    $get($name) {
-        let $cvt = false;
-        if (typeof $name == "string") {
-            $name = $name.trim();
-            if ($name.indexOf(":") >= 0) { 
-                [ $name, $cvt ] = $name.vsplit(":");
-                $cvt  = $cvt .trim(),
-                $name = $name.trim();
-            };
-        }
-        return this.#layout[$name];
+        if (typeof $name == "string") { $name = $name.trim(); };
+        return new StructType($name || $T, $offset, $array, $default, parseInt($fn) || 0);
     }
 
     //
@@ -141,7 +91,7 @@ export default class StructLayout {
         //
         for (const $N in this.#layout) {
             let memT = this.#layout[$N];
-            if (typeof memT == "string") { memT = this.$parse(memT); };
+            if (typeof memT == "string") { memT = StructType.$parse(memT); };
 
             // make C-like aligment
             const EL = (CStructs[memT.$name] || CTypes[memT.$name]).$byteLength || 1;
