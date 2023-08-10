@@ -1,6 +1,6 @@
+import { CStructs } from "../Utils/Utils.mjs";
 import StructView from "./StructView.mjs";
 import ProxyHandle from "./ProxyHandle.mjs";
-import { CStructs } from "./Utils.mjs";
 
 //
 export default class TypeAlias {

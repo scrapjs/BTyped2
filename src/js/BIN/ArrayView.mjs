@@ -1,4 +1,4 @@
-import { AsBigInt, AsInt, CTypes, AddressOf } from "./Utils.mjs";
+import { AsBigInt, AsInt, CTypes, AddressOf } from "../Utils/Utils.mjs";
 
 //
 export default class ArrayView {

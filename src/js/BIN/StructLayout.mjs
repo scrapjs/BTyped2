@@ -1,7 +1,7 @@
 import StructView from "./StructView.mjs";
 import ProxyHandle from "./ProxyHandle.mjs";
 import StructType from "./StructType.mjs";
-import { CStructs, CTypes, AsInt } from "./Utils.mjs";
+import { CStructs, CTypes, AsInt } from "../Utils/Utils.mjs";
 
 //
 export default class StructLayout {

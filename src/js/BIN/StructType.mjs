@@ -1,4 +1,4 @@
-import { CStructs, CTypes, AsInt } from "./Utils.mjs";
+import { CStructs, CTypes, AsInt } from "../Utils/Utils.mjs";
 
 //
 export default class StructType {

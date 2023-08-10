@@ -1,5 +1,5 @@
 import ProxyHandle from "./ProxyHandle.mjs";
-import { AsBigInt, AsInt, CTypes, CStructs, AddressOf } from "./Utils.mjs";
+import { AsBigInt, AsInt, CTypes, CStructs, AddressOf } from "../Utils/Utils.mjs";
 
 //
 export default class StructView {
