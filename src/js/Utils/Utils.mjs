@@ -101,9 +101,22 @@ const swap32 = (val) => {
 const exchange = (obj, key, _new_)=> { const _old_ = obj[key]; obj[key] = _new_; return _old_; };
 
 //
-Object.exchange = exchange;
-Array.exchange = exchange;
-Array.prototype.exchange = function(I, _new_) { return exchange(this, I, _new_); };
+/**
+ * @deprecated Please, use Map with new methods
+ */
+Object.exchange ??= exchange;
+
+//
+Array.exchange ??= exchange;
+Array.prototype.exchange ??= function(I, _new_) { return exchange(this, I, _new_); };
+
+//
+Map.prototype.exchange ??= function(name, val) { const $old = this.get(name); this.set(name, val); return $old; }
+Map.prototype.shift ??= function(name, val) { const $old = this.get(name); this.delete(name); return $old; }
+
+//
+WeakMap.prototype.exchange ??= function(name, val) { const $old = this.get(name); this.set(name, val); return $old; }
+WeakMap.prototype.shift ??= function(name, val) { const $old = this.get(name); this.delete(name); return $old; }
 
 //
 const createDOMCanvas = (W,H) => {
