@@ -1,3 +1,8 @@
+const _LOG_ = (...$args)=>{
+    console.log(...$args);
+    return $args[0];
+}
+
 // 
 export default class ImageLoader {
     #self = null;
@@ -62,7 +67,7 @@ export default class ImageLoader {
 
         //
         const self = this.#self;
-        if (!_srcset) return this;
+        if (!_srcset) { return this; };
 
         //
         if (this._prevent) {
@@ -77,7 +82,7 @@ export default class ImageLoader {
             // make set srcset
             _srcset = _srcset.map(async (src)=>{
                 const thread = this.#WC(), instance = thread.instance;
-                try { src.url = await instance.load(src.url).then(URL.createObjectURL); thread.counter--; } catch(e) { console.error(e); }; return src;
+                try { src.url = await (await instance.load)(src.url).then(_LOG_).then(URL.createObjectURL); thread.counter--; } catch(e) { console.error(e); }; return src;
             });
 
             //
