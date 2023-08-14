@@ -1,6 +1,6 @@
 {
-  "name": "framelib",
-  "version": "1.0.0",
+  "name": "btyped2",
+  "version": "1.0.0a",
   "description": "Library for decoders...",
   "main": "index.mjs",
   "directories": {
@@ -16,7 +16,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/BlazerNEO/OpenJNG2.git"
+    "url": "git+https://github.com/BlazerNEO/BTyped2.git"
   },
   "keywords": [
     "library",
@@ -33,8 +33,10 @@
     "@rgrove/parse-xml": "^4.1.0",
     "crc-32": "^1.2.2",
     "crc32": "^0.2.2",
+    "indexeddb-fs": "^2.1.5"
+  },
+  "devDependencies": {
     "harmony-reflect": "^1.6.2",
-    "indexeddb-fs": "^2.1.5",
     "vite": "^4.4.7",
     "vite-plugin-cross-origin-isolation": "^0.1.6",
     "vite-plugin-pug": "^0.3.2",
