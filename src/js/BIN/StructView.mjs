@@ -23,7 +23,7 @@ export default class StructView {
     get $length() { return this.#length; };
     get $byteOffset() { return this.#byteOffset; };
     get $byteLength() { return (this.$length * this.#layout.$byteLength); };
-    get $ownKeys() { return [...Object.keys(this.#layout.$layout), ...Array.from({length: this.#length}, (_, i) => i)]; };
+    get $ownKeys() { return [...this.#layout.$layout.keys(), ...Array.from({length: this.#length}, (_, i) => i)]; };
     get $layout() { return this.#layout; };
     get $buffer() { return (this.$target?.buffer || this.$target); };
     get $address() { return (AddressOf(this.$target) || BigInt(this.$target.byteOffset) || 0n) + BigInt(this.$byteOffset); };
@@ -35,7 +35,7 @@ export default class StructView {
     }
 
     //
-    $has($name) { return ($name in this.#layout.$layout); };
+    $has($name) { return (this.#layout.$layout.has($name)); };
     $get($name) {
         const $type = this.#layout.$typeof($name);
         const $index = $type.$index;

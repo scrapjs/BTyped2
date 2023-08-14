@@ -6,12 +6,12 @@ import { CStructs, CTypes, AsInt } from "../Utils/Utils.mjs";
 //
 export default class StructLayout {
     #typed = "";
-    #layout = {};
+    #layout = new Map([]);
     #byteLength = 1;
 
     //
-    constructor(typed, layout = {}, byteLength = 1) {
-        this.#layout = layout;
+    constructor(typed, layout = [], byteLength = 1) {
+        this.#layout = new Map(layout);
         this.#typed = typed;
         this.#byteLength = byteLength;
 
@@ -39,7 +39,7 @@ export default class StructLayout {
         }
 
         // initial values
-        const $T = (this.#layout[$fn] ?? this);
+        const $T = (this.#layout.get($fn) ?? this);
         const $P = (typeof $T == "string") ? StructType.$parse($T.trim()) : $T;
         if ($P instanceof StructType) {
             $name    = ($P?.$name    || $name), 
@@ -85,22 +85,20 @@ export default class StructLayout {
 
     //
     get $auto() {
-        const layout = {};
         let counter = 0;
 
         //
-        for (const $N in this.#layout) {
-            let memT = this.#layout[$N];
+        for (const $N of this.#layout.keys()) {
+            let memT = this.#layout.get($N);
             if (typeof memT == "string") { memT = StructType.$parse(memT); };
 
             // make C-like aligment
             const EL = (CStructs[memT.$name] || CTypes[memT.$name]).$byteLength || 1;
             const offset = Math.ceil(counter / Math.min(EL, 8)) * Math.min(EL, 8); counter = (offset + EL * (memT.$array || 1));
-            layout[$N] = new StructType(memT.$name, offset, memT.$array, memT.$default);
+            this.#layout.set($N, new StructType(memT.$name, offset, memT.$array, memT.$default));
         }
 
         //
-        Object.assign(this.#layout, layout);
         this.#byteLength = counter;
 
         //
