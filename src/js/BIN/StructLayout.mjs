@@ -16,7 +16,7 @@ export default class StructLayout {
         this.#byteLength = byteLength;
 
         //
-        if (this.#typed) { CStructs[this.#typed] = this; };
+        if (this.#typed) { CStructs.set(this.#typed, this); };
     }
 
     //
@@ -93,7 +93,7 @@ export default class StructLayout {
             if (typeof memT == "string") { memT = StructType.$parse(memT); };
 
             // make C-like aligment
-            const EL = (CStructs[memT.$name] || CTypes[memT.$name]).$byteLength || 1;
+            const EL = (CStructs.get(memT.$name) || CTypes.get(memT.$name)).$byteLength || 1;
             const offset = Math.ceil(counter / Math.min(EL, 8)) * Math.min(EL, 8); counter = (offset + EL * (memT.$array || 1));
             this.#layout.set($N, new StructType(memT.$name, offset, memT.$array, memT.$default));
         }

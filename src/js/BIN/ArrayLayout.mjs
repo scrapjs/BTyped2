@@ -17,7 +17,7 @@ export default class ArrayLayout {
         this.#classOf = classOf;
 
         //
-        if (this.#typed) { CTypes[this.#typed] = this; };
+        if (this.#typed) { CTypes.set(this.#typed, this); };
     }
 
     //

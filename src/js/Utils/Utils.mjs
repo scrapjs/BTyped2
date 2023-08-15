@@ -86,8 +86,8 @@ export const AsBigInt = (value)=>{
 };
 
 //
-export const CTypes = {};
-export const CStructs = {};
+export const CTypes = new Map();
+export const CStructs = new Map();
 
 //
 const swap32 = (val) => {

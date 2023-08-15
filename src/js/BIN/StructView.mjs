@@ -10,7 +10,7 @@ export default class StructView {
 
     //
     constructor(layout, target, byteOffset = 0, length = 1) {
-        this.#layout = (typeof layout == "string") ? CStructs[layout] : layout;
+        this.#layout = (typeof layout == "string") ? CStructs.get(layout) : layout;
         this.#byteOffset = byteOffset;
         this.#length = length;
 
@@ -42,7 +42,7 @@ export default class StructView {
 
         // getting an member type
         let $T = $type.$name;
-        if ((typeof $T == "string") && (CStructs[$T] || (CTypes[$T] && $type.$array))) { $T = (CStructs[$T] || CTypes[$T]); };
+        if ((typeof $T == "string") && (CStructs.has($T) || (CTypes.has($T) && $type.$array))) { $T = (CStructs.get($T) || CTypes.get($T)); };
 
         // an-struct or arrays
         if (typeof $T == "object") {

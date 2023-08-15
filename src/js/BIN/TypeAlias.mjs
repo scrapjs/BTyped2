@@ -13,7 +13,7 @@ export default class TypeAlias {
         this.#target = target;
 
         //
-        if (this.#typed) { CStructs[this.#typed] = this; };
+        if (this.#typed) { CStructs.set(this.#typed, this); };
     }
 
     //
@@ -21,8 +21,8 @@ export default class TypeAlias {
     get $target() { return this.#target; }
 
     //
-    $create(...$args) { return CStructs[this.#target].$create(...$args); }
-    $wrap(...$args) { return CStructs[this.#target].$wrap(...$args); }
-    $view(...$args) { return CStructs[this.#target].$view(...$args); }
+    $create(...$args) { return CStructs.get(this.#target).$create(...$args); }
+    $wrap(...$args) { return CStructs.get(this.#target).$wrap(...$args); }
+    $view(...$args) { return CStructs.get(this.#target).$view(...$args); }
     $get($name) { return $name; }
 };

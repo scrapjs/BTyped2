@@ -16,7 +16,7 @@ export default class ArrayView {
 
         //
         this.#byteOffset = byteOffset;
-        this.#layout = (typeof layout == "string") ? CTypes[layout] : layout;
+        this.#layout = (typeof layout == "string") ? CTypes.get(layout) : layout;
     }
 
     //
