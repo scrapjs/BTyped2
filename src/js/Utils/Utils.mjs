@@ -76,7 +76,7 @@ export const AsBigInt = (value)=>{
         //return (new Types["u64[arr]"](value)).address(); // present as u64 array
     //} else
     if (typeof value == "string") { // LTE - лучший тибетский интернет!
-        const arrayBuffer = new ArrayBuffer((value = value + "\0").length);
+        const arrayBuffer = new ArrayBuffer((value += "\0").length);
         EncoderUTF8.encodeInto(value, new Uint8Array(arrayBuffer, 0, value.length));
         return AddressOf(arrayBuffer);
     } else 
@@ -443,10 +443,10 @@ const promiseDomContentLoaded = ()=> {
     });
     return new Proxy(_promise_, {
         get(target, name) { 
-            if (name == "cancel") return ()=>{
+            if (name == "cancel") { return ()=>{
                 document.removeEventListener(_target_._request); _target_._request = null;
                 _target_._catch("Request animation frame was canceled");
-            } 
+            }};
             return target[name].bind(target);  
         }
     });
@@ -463,10 +463,10 @@ const promiseAnimationFrame = ()=> {
     });
     return new Proxy(_promise_, {
         get(target, name) {
-            if (name == "cancel") return ()=>{
+            if (name == "cancel") { return ()=>{
                 cancelAnimationFrame(_target_._request); _target_._request = null;
                 _target_._catch("Request animation frame was canceled");
-            } 
+            }}
             return target[name].bind(target); 
         }
     });
@@ -484,10 +484,10 @@ const promiseTimeout = (ms = 0)=> {
     return new Proxy(_promise_, {
         get(target, name, receiver) { 
             
-            if (name == "cancel") return ()=>{
+            if (name == "cancel") { return ()=>{
                 clearTimeout(_target_._request); _target_._request = null;
                 _target_._catch("Timeout was canceled");
-            }
+            }};
             return target[name].bind(target);
         }
     });

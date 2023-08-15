@@ -34,7 +34,7 @@ export default class MemoryPool {
     }
 
     async $load(url, handle) {
-        // fix issue with fetch
+        // fixes issue with fetch
         if (typeof url == "string") {
             url = url.trim() || ""; 
             if (url.startsWith(".")) { url = location.origin + "/" + url; };

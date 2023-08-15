@@ -38,7 +38,7 @@ export default class StructView {
     $has($name) { return (this.#layout.$layout.has($name)); };
     $get($name) {
         const $type = this.#layout.$typeof($name);
-        const $index = $type.$index;
+        const $index = $type?.$index || 0;
 
         // getting an member type
         let $T = $type.$name;
