@@ -15,7 +15,9 @@ Planned to use in Vulkan API node.js projects.
 ## 📦 Projects 📦
 
 - [x] ❤️‍🔥 [InterWork 2](https://github.com/BlazerNEO/InterWork2) ❤️‍🔥 - next-gen pure JS web worker library.
-- [x] 🧮️ [GDI 2](https://github.com/BlazerNEO/GDI2) 🧮️ - minimalistic WebGL library for image processing.
+
+## 🗿 No active development or no more maintained... 🗿
+
 - [x] 🖼 [OpenJNG 2](https://github.com/BlazerNEO/OpenJNG2) 🖼 - next-gen JNG decoder for Web Browser.
 - [x] 🖼 [WrapJXL](https://github.com/BlazerNEO/WrapJXL) 🖼 - wrap around JXL library from WebAssembly.
 - [ ] 🥩 [RawImage](https://github.com/BlazerNEO/RawImage) 🥩 - about raw, rgba, bgra, other uncompressed formats.
