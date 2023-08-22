@@ -1,0 +1,490 @@
+/* 
+    B.L.A.Z.E.R. CSS CORE LIBRARY!
+    Status: WIP!
+    Description: Fix some CSS issues, make boilerplate, add some security into web-page.
+    Competitor of Normalize CSS, but for developers and modern browsers.
+*/
+
+@import url("./Sanitize2.css");
+@import url("./fonts/firavaBase64.css");
+
+/* */
+@font-face {
+    font-family: "Roboto Flex";
+    font-weight: 100 900;
+    font-style: normal;
+    src: url('fonts/RobotoFlex.ttf');
+}
+
+/* */
+br {
+    display: block;
+    content: "";
+    line-height: 0px;
+    border: solid 0px transparent;
+    padding: 0px;
+    margin: 0px;
+    width: 0px;
+    height: 0px;
+    box-sizing: border-box;
+}
+
+/* */
+code, pre {
+    font-variant-ligatures: common-ligatures;
+    font-family: "Fira Code", "Consolas";
+}
+
+/* */
+:root, html {
+    --content: url("data:image/gif;base64,R0lGODlhAQABAIAAAP///wAAACwAAAAAAQABAAACAkQBADs=");
+    --display: inline-block;
+    --min-width: 480px;
+
+    /* */
+    padding: 0px;
+    margin: 0px;
+
+    /* */
+    font-size: 0.9rem;
+    min-width: var(--min-width);
+}
+
+/* */
+body {
+    min-width: var(--min-width);
+}
+
+/* Better Text Format */
+body, p, h1, h2, h3, h4, h5, h6, a, span, .text {
+    width: max-content;
+    max-width: min(min(100cqw, 9999px), 100%);
+    word-break: keep-all;
+    text-wrap: balanced;
+    overflow-wrap: anywhere;
+    white-space: normal;/*pre-line;*/
+    text-align: justify;
+    padding: 0;
+    margin: 0;
+}
+
+a {
+    text-decoration: underline;
+    display: contents;
+}
+
+body, h1, h2, h3, h4, h5, h6, p, div {
+    display: inline-block;
+}
+
+h1, h2, h3, h4, h5, h6 {
+    word-break: nowrap;
+    padding: 0;
+    margin: 0;
+}
+
+p {
+    padding: 0.5rem;
+}
+
+.hardware, img, canvas, video, svg, picture, embed, object {
+    /* Multi-Layering purpose default */
+    background-clip: content-box;
+    background-origin: content-box;
+    background-position: center center;
+    background-attachment: local;
+    background-repeat: no-repeat;
+    background-size: contain;
+
+    /* Layering support */
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+
+    /* */
+    background-color: transparent;
+    will-change: contents, content, transform;
+    filter: grayscale(0%);
+
+    /* */
+    -webkit-backface-visibility: hidden;
+    -moz-backface-visibility: hidden;
+    -ms-backface-visibility: hidden;
+    backface-visibility: hidden;
+
+    /* */
+    -webkit-perspective: 1000;
+    -moz-perspective: 1000;
+    -ms-perspective: 1000;
+    perspective: 1000;
+
+    /* Enable hardware acceleration */
+    -webkit-transform: translate3d(0, 0, 0);
+    -moz-transform: translate3d(0, 0, 0);
+    -ms-transform: translate3d(0, 0, 0);
+    transform: translate3d(0, 0, 0);
+
+    /* */
+    --content: normal;
+    content: var(--content);
+
+    /* Some filter hack */
+    filter: grayscale(0%);
+
+    /*  */
+    overflow: hidden;
+    scrollbar-gutter: auto;
+    scrollbar-width: none;
+
+    /* */
+    object-fit: contain;
+    object-position: center;
+
+    /* */
+    @supports (scrollbar-width: none) {
+        & {
+            scrollbar-gutter: stable both-edges;
+            scrollbar-width: none;
+        }
+    }
+}
+
+
+
+/* */
+* {
+    color-gamut: rec2020;
+
+    background-blend-mode: normal;
+    mix-blend-mode: normal;
+    isolation: isolate;
+
+    /* */
+    -webkit-font-smoothing: subpixel-antialiased;
+    -moz-osx-font-smoothing: auto;
+    font-smooth: always;
+    text-rendering: optimizeLegibility;
+    text-rendering: geometricPrecision;
+    filter: grayscale(0%);
+
+    /* */
+    -webkit-perspective: 1000;
+    -moz-perspective: 1000;
+    -ms-perspective: 1000;
+    perspective: 1000;
+
+    /* */
+    -webkit-backface-visibility: hidden;
+    -moz-backface-visibility: hidden;
+    -ms-backface-visibility: hidden;
+    backface-visibility: hidden;
+
+    /* Enable hardware acceleration */
+    -webkit-transform: translate3d(0, 0, 0);
+    -moz-transform: translate3d(0, 0, 0);
+    -ms-transform: translate3d(0, 0, 0);
+    transform: translate3d(0, 0, 0);
+
+    /* Multi-Layering purpose default */
+    background-clip: border-box;
+    background-origin: border-box;
+    background-position: center center;
+    background-attachment: local;
+    background-repeat: no-repeat;
+    background-size: contain;
+
+    /* */
+    box-sizing: border-box;
+    position: relative;
+    top: auto;
+    left: auto;
+    bottom: auto;
+    right: auto;
+
+    /* use overlay scroll-bars library */
+    overflow: hidden;
+    scrollbar-gutter: auto;
+    scrollbar-width: none;
+    scroll-behavior: smooth;
+
+    /* Disable transition by default */
+    -webkit-transition: none;
+    -moz-transition: none;
+    -o-transition: none;
+    transition: none;
+
+    /*  */
+    &::-webkit-scrollbar {
+        -webkit-appearance: none;
+        display: none;
+        width: 0;
+        height: 0;
+        opacity: 0;
+        pointer-events: none;
+        visibility: hidden;
+    }
+
+    /*  */
+    @supports (scrollbar-width: none) {
+        & {
+            scrollbar-gutter: stable both-edges;
+            scrollbar-width: none;
+        }
+    }
+}
+
+/* */
+*.dragging, .dragging * {
+	cursor: move !important; /* fallback: no `url()` support or images disabled */
+	cursor: -webkit-grabbing !important; /* Chrome 1-21, Safari 4+ */
+	cursor:    -moz-grabbing !important; /* Firefox 1.5-26 */
+	cursor:         grabbing !important; /* W3C standards syntax, should come least */
+}
+
+/* */
+html {
+    /* Better font mod by default */
+    background-color: transparent;
+    font-family: "firava", "Roboto Flex";
+    font-size: clamp(0.333rem, 1dvw, 1rem);
+    font-variant-ligatures: common-ligatures; 
+
+    /* */
+    display: block;
+    position: relative;
+    height: min(100dvh, 9999px);
+    width: max(min(100dvw, 9999px), var(--min-width));
+    max-width: max(min(100dvw, 9999px), var(--min-width));
+    min-width: max(min(100dvw, 9999px), var(--min-width));
+    max-height: min(100dvh, 9999px);
+    min-height: min(100dvh, 9999px);
+    overflow: hidden;
+    box-sizing: border-box;
+    text-align: center;
+    touch-action: none;
+    margin: 0;
+    padding: 0;
+}
+
+/* */
+body {
+    /* optional */
+    background-color: transparent;
+    background-image: 
+        linear-gradient(to bottom, #7F7F7F0A 1px, transparent 1px), 
+        linear-gradient(to right , #7F7F7F0A 1px, transparent 1px);
+
+    /* */
+    background-size: 2rem 2rem;
+    background-repeat: repeat;
+    background-position: left top;
+
+    /* */
+    display: block;
+    position: relative;
+    height: min(100dvh, 9999px);
+    width: max(min(100dvw, 9999px), var(--min-width));
+    min-width: max(min(100dvw, 9999px), var(--min-width));
+    max-width: max(min(100dvw, 9999px), var(--min-width));
+    min-height: min(100dvh, 9999px);
+    max-height: min(100dvh, 9999px);
+    overflow: hidden;
+    box-sizing: border-box;
+    text-align: center;
+    touch-action: pan-x pan-y;
+    margin: 0;
+    padding: 0;
+
+    /* Default-ness */
+    & > div, & > p {
+        text-align: left;
+        width: max-content;
+        display: inline-block;
+    }
+}
+
+/* */
+nav, section {
+    touch-action: none;
+}
+
+/* Protect from naive copy or selection */
+div, span, a, p, .text {
+    /* */
+    -webkit-user-select: none;
+    -khtml-user-select: none;
+    -moz-user-select: none;
+    -o-user-select: none;
+    user-select: none;
+
+    /* */
+    -webkit-user-drag: none;
+    -khtml-user-drag: none;
+    -moz-user-drag: none;
+    -o-user-drag: none;
+    user-drag: none;
+}
+
+/* */
+.background {
+    /* Multi-Layering purpose default */
+    background-clip: content-box;
+    background-origin: content-box;
+    background-position: center center;
+    background-attachment: local;
+    background-repeat: no-repeat;
+    background-size: cover;
+
+    /* */
+    object-fit: cover;
+    object-position: center;
+}
+
+/* Correct behaviour of images, videos, canvas */
+img, video, canvas, svg, embed, object {
+    /* Lazy scrolling fix */
+    will-change: contents, content, transform;
+    min-width: 1px; min-height: 1px;
+    white-space: nowrap;
+
+    /* Multi-Layering purpose default */
+    background-clip: content-box;
+    background-origin: content-box;
+    background-position: center center;
+    background-attachment: local;
+    background-repeat: no-repeat;
+    background-size: contain;
+
+    /* Layering support */
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+
+    /* */
+    background-color: transparent;
+
+    /* */
+    display: inline-block;
+    box-sizing: border-box;
+    width: max-content;
+    height: max-content;
+    object-fit: contain;
+    object-position: center;
+
+    /* */
+    -webkit-user-select: none;
+    -khtml-user-select: none;
+    -moz-user-select: none;
+    -o-user-select: none;
+    user-select: none;
+
+    /* */
+    -webkit-user-drag: none;
+    -khtml-user-drag: none;
+    -moz-user-drag: none;
+    -o-user-drag: none;
+    user-drag: none;
+
+    /* protect from naive saving */
+    pointer-events: none;
+
+    /* */
+    image-rendering: smooth;
+    image-rendering: high-quality;
+    image-rendering: optimizeQuality;
+    image-orientation: from-image;
+
+    /* */
+    line-height: 0;
+    font-size: 0;
+    margin: 0;
+    padding: 0;
+
+    /* */
+    --content: normal;
+    --display: inline-block;
+
+    /* */
+    display: var(--display);
+    content: var(--content);
+
+    /*  */
+    overflow: hidden;
+    scrollbar-gutter: auto;
+    scrollbar-width: none;
+}
+
+/* */
+picture {
+    display: contents;
+    line-height: 0;
+    font-size: 0;
+}
+
+/* */
+img {
+    --content: normal;
+    content: var(--content);
+    will-change: contents, content, transform;
+
+    /* */
+    &:not([src]), &[src=""] {
+        /*--display: none;*/
+        
+        --content: url("data:image/gif;base64,R0lGODlhAQABAIAAAP///wAAACwAAAAAAQABAAACAkQBADs=");
+        content-visibility: hidden;
+        /*content: normal;*/
+
+        /* Lazy scrolling fix */
+        width: 1px; height: 1px;
+        min-width: 1px; min-height: 1px;
+    }
+
+    /* */
+    &[src$=".jng"] {
+        /*--content: url("data:image/gif;base64,R0lGODlhAQABAIAAAP///wAAACwAAAAAAQABAAACAkQBADs=");*/
+        content: var(--content);
+        /*content: normal;*/
+    }
+}
+
+/* don't make blocks from selective tags */
+a, span { display: contents; padding: 0; margin: 0; }
+
+/* */
+mark-down {
+    display: none;
+
+    &.text, &.mark-down {
+        display: inline-block;
+    }
+}
+
+/* */
+drag-able {
+    display: none;
+
+    &.drag-able {
+        display: inline-block;
+    }
+}
+
+/* */
+scroll-able {
+    display: none;
+
+    &.scroll-able {
+        display: inline-block;
+    }
+}
+
+/* */
+slider-x {
+    display: none;
+
+    &.slider-x {
+        display: inline-block;
+    }
+}

@@ -1,16 +1,15 @@
 {
   "name": "btyped2",
-  "version": "1.0.0a",
-  "description": "Library for decoders...",
+  "version": "1.0.0",
+  "description": "New base plate for your website or web-app",
   "main": "index.mjs",
   "directories": {
-    "lib": "lib",
-    "test": "test"
+    "lib": "lib"
   },
   "type": "module",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "dev": "vite --debug --port 4000",
+    "dev": "vite --debug --port 4000 --host",
     "build": "vite build --debug --sourcemap inline",
     "preview": "vite preview --debug --sourcemap inline"
   },
@@ -19,27 +18,41 @@
     "url": "git+https://github.com/BlazerNEO/BTyped2.git"
   },
   "keywords": [
-    "library",
+    "plate",
+    "base",
+    "index",
+    "html",
+    "js",
+    "css",
+    "sanitizer",
     "utils",
-    "binary",
-    "decode",
-    "encode"
+    "basic",
+    "basis",
+    "SDK"
   ],
-  "author": "user=404",
+  "author": "user-404",
   "license": "MIT",
-  "dependencies": {
-    "@msgpack/msgpack": "^3.0.0-beta2",
-    "@petamoriken/float16": "^3.8.1",
-    "@rgrove/parse-xml": "^4.1.0",
-    "crc-32": "^1.2.2",
-    "crc32": "^0.2.2",
-    "indexeddb-fs": "^2.1.5"
+  "bugs": {
+    "url": "https://github.com/BlazerNEO/BTyped2/issues"
   },
-  "devDependencies": {
-    "harmony-reflect": "^1.6.2",
+  "homepage": "https://github.com/BlazerNEO/BTyped2#readme",
+  "dependencies": {
+    "@petamoriken/float16": "^3.8.1",
+    "@rollup/plugin-terser": "^0.4.3",
+    "bootstrap-icons": "^1.10.5",
+    "jsox": "^1.2.118",
+    "pug": "^3.0.2",
+    "scss": "^0.2.4",
     "vite": "^4.4.7",
     "vite-plugin-cross-origin-isolation": "^0.1.6",
     "vite-plugin-pug": "^0.3.2",
-    "vite-plugin-pwa": "^0.16.4"
+    "vite-plugin-pwa": "^0.16.4",
+    "vite-plugin-sass": "^0.1.0"
+  },
+  "devDependencies": {
+    "lightningcss": "^1.21.5",
+    "postcss": "^8.4.27",
+    "sass": "^1.64.2",
+    "stylus": "^0.59.0"
   }
 }

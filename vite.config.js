@@ -12,21 +12,34 @@ export default defineConfig(({ command, mode }) => {
     return {
         // vite config
         port: 4000,
-        base: "./test/",
-        root: "./test/",
+        base: "./",
+        root: "./src/",
         build: {
           outDir: './dist/',
           rollupOptions: {
             input: {
               // need a better way to template
-              main: "./test/index.html",
+              main: "./src/index.html",
             },
           },
+        },
+        css: {
+          modules: {
+            scopeBehaviour: "global"
+          },
+          preprocessorOptions: {
+            scss: {
+
+            }
+          }
         },
         include: ["src/**/*", "src/*", "*"],
         server: { fs: { allow: ['./','./deps','../']} },
         resolve: {
           alias: {
+            "BTyped2": fileURLToPath(new URL("./deps/BTyped2/", import.meta.url)),
+
+            //
             "src": fileURLToPath(new URL("./src/", import.meta.url)),
             "deps": fileURLToPath(new URL("./deps/", import.meta.url)),
             "test": fileURLToPath(new URL("./test/", import.meta.url)),
