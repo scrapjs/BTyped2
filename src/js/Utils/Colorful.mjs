@@ -1,29 +1,33 @@
-const shift = [0.0, 2.0, 4.0];
-let mod = (a, n) => { return ((a % n) + n) % n; };
+export const shift = [0.0, 2.0, 4.0];
+export const mod = (a, n) => { return ((a % n) + n) % n; };
 
-let calcHue = (rgb) => {
-    let gbr = rgb.map((v, i, arr)=> { return arr[mod(i - 2, 3)]; });
-    let brg = rgb.map((v, i, arr)=> { return arr[mod(i - 1, 3)]; });
-    let G = C < 1 ? m / (1 - C) : 0;
-    return (C > 0 ? Math.max.apply(Math, rgb.map(function(v, i){
-      let a = (gbr[i] - brg[i]) / C, b = mod(a + shift[i], 6.0);
+//
+export const calcHue = (rgb) => {
+    const gbr = rgb.map((v, i, arr)=> { return arr[mod(i - 2, 3)]; });
+    const brg = rgb.map((v, i, arr)=> { return arr[mod(i - 1, 3)]; });
+    //let G = C < 1 ? m / (1 - C) : 0;
+    return (C > 0 ? Math.max(...rgb.map(function(v, i){
+        const a = (gbr[i] - brg[i]) / C, b = mod(a + shift[i], 6.0);
       return b * (M == v);
     })) : 0.0) / 6.0;
 }
 
-let calcRgb = (h) => {
+//
+export const calcRgb = (h) => {
     return Array.from([h, h, h]).map(function(v, i){
-        let a = mod(v - shift[i], 6.0), b = Math.abs(a - 3.0) - 1.0;
+        const a = mod(v - shift[i], 6.0), b = Math.abs(a - 3.0) - 1.0;
         return Math.min(Math.max(b, 0.0), 1.0);
     });
 }
 
-let inv60  = (val)=>{ return val/59.99999999999999; }
-let inv100 = (val)=>{ return val/99.99999999999999; }
-let inv255 = (val)=>{ return val/255.0; }
-let inv360 = (val)=>{ return val/359.99999999999999; }
+//
+export const inv60  = (val)=>{ return val/59.99999999999999; }
+export const inv100 = (val)=>{ return val/99.99999999999999; }
+export const inv255 = (val)=>{ return val/255.0; }
+export const inv360 = (val)=>{ return val/359.99999999999999; }
 
-Object.assign(exports, {
+//
+export default {
     inv60, inv100, inv255, inv360,
     RGB: Symbol("RGB"),
     HCG: Symbol("HCG"),
@@ -32,9 +36,9 @@ Object.assign(exports, {
     HWB: Symbol("HWB"),
     HCI: Symbol("HCI"),
     HSI: Symbol("HSI"),
-    do: ({
-        input=this.RGB,output=this.RGB,value=[0,0,0],luma=[1.0/3.0,1.0/3.0,1.0/3.0]
-    })=>{
+
+    //
+    do({ input=this.RGB,output=this.RGB,value=[0,0,0],luma=[1.0/3.0,1.0/3.0,1.0/3.0] }) {
         // let extract components from inputs
         let [H,m,M,C,I,Y,x] = [null,null,null,null,null,null]; // X is reserved variable
 
@@ -71,12 +75,12 @@ Object.assign(exports, {
             break;
         }
 
-        if (Y == null) Y = (2.0-Math.abs(mod(H*6.0,2.0)-1.0))*C/3.0;
-        if (I == null) I = Y + m;
-        if (M == null) M = m + C;
-        if (C == null) C = M - m;
-        if (m == null) m = M - C;
-        
+        if (Y == null) { Y = (2.0-Math.abs(mod(H*6.0,2.0)-1.0))*C/3.0; }
+        if (I == null) { I = Y + m; }
+        if (M == null) { M = m + C; }
+        if (C == null) { C = M - m; }
+        if (m == null) { m = M - C; }
+
         switch(output) {
             case this.RGB:
             return calcRgb(H).map((v)=>{return (v*C+m);});
@@ -101,4 +105,4 @@ Object.assign(exports, {
             return [H, I>0.0 ? 1.0-m/I : 0.0, I];
         }
     }
-});
+};

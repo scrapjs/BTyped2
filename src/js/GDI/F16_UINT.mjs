@@ -1,26 +1,6 @@
-const compileShader = (gl, shaderSource, shaderType) => {
-    const shader = gl.createShader(shaderType);
-    gl.shaderSource(shader, shaderSource);
-    gl.compileShader(shader);
-    const success = gl.getShaderParameter(shader, gl.COMPILE_STATUS);
-    if (!success) {
-      throw ("could not compile shader:" + gl.getShaderInfoLog(shader));
-    }
-    return shader;
-}
+import {compileShader, createProgram} from "./GL2.mjs"
 
-const createProgram = (gl, vertexShader, fragmentShader) => {
-   var program = gl.createProgram();
-   gl.attachShader(program, vertexShader);
-   gl.attachShader(program, fragmentShader);
-   gl.linkProgram(program);
-   var success = gl.getProgramParameter(program, gl.LINK_STATUS);
-   if (!success) {
-       throw ("program failed to link:" + gl.getProgramInfoLog(program));
-   }
-   return program;
-}
-
+//
 export default class F16_UINT {
     constructor() {
         this.canvas = new OffscreenCanvas(2, 2);

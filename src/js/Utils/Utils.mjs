@@ -131,7 +131,7 @@ const createDOMCanvas = (W,H) => {
         });
     }
 
-    var canvas = document.createElement("canvas");
+    const canvas = document.createElement("canvas");
     canvas.width = W;
     canvas.height = H;
     return canvas;
@@ -145,8 +145,8 @@ const loadImageBitmap = async (bitmap, createFunc = createDOMCanvas, showFunc = 
     }).drawImage(B, 0, 0);
 }, getFunc = (C)=>C) => {
     const isWorker = typeof WorkerGlobalScope !== 'undefined' && self instanceof WorkerGlobalScope;
-    var bitmap = await bitmap;
-    var canvas = await createFunc(bitmap.width, bitmap.height, bitmap);//(offscreen || isWorker) ? new OffscreenCanvas(bitmap.width, bitmap.height) : createDOMCanvas(bitmap.width, bitmap.height);
+    const bitmap = await bitmap;
+    const canvas = await createFunc(bitmap.width, bitmap.height, bitmap);//(offscreen || isWorker) ? new OffscreenCanvas(bitmap.width, bitmap.height) : createDOMCanvas(bitmap.width, bitmap.height);
     showFunc(canvas, bitmap);
     return await getFunc(canvas);
 }
@@ -334,7 +334,7 @@ const blobToArrayBuffer = async(url) => {
 
 //
 const saveBlob = (url, name) => {
-    var a = document.createElement("a");
+    const a = document.createElement("a");
     document.body.appendChild(a);
     a.style = "display: none";
     a.href =  url;
