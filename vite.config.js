@@ -40,6 +40,10 @@ export default defineConfig(({ command, mode }) => {
             "BTyped2": fileURLToPath(new URL("./deps/BTyped2/", import.meta.url)),
 
             //
+            "cxx": fileURLToPath(new URL("./src/cxx", import.meta.url)),
+            "scss": fileURLToPath(new URL("./src/scss", import.meta.url)),
+            "css": fileURLToPath(new URL("./src/css", import.meta.url)),
+            "js": fileURLToPath(new URL("./src/js", import.meta.url)),
             "src": fileURLToPath(new URL("./src/", import.meta.url)),
             "deps": fileURLToPath(new URL("./deps/", import.meta.url)),
             "test": fileURLToPath(new URL("./test/", import.meta.url)),
