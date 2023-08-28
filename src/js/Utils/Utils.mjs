@@ -144,8 +144,8 @@ const loadImageBitmap = async (bitmap, createFunc = createDOMCanvas, showFunc = 
         willReadFrequently: true
     }).drawImage(B, 0, 0);
 }, getFunc = (C)=>C) => {
+    bitmap = await bitmap;
     const isWorker = typeof WorkerGlobalScope !== 'undefined' && self instanceof WorkerGlobalScope;
-    const bitmap = await bitmap;
     const canvas = await createFunc(bitmap.width, bitmap.height, bitmap);//(offscreen || isWorker) ? new OffscreenCanvas(bitmap.width, bitmap.height) : createDOMCanvas(bitmap.width, bitmap.height);
     showFunc(canvas, bitmap);
     return await getFunc(canvas);
