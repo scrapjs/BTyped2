@@ -2,6 +2,12 @@
 
 🪖 A typed structure library (mostly, for NodeJS)... 🪖
 
+### 📦 `v2.1` teaser? 📦
+I have some plans about next-gen update for BTyped2 `v2.1`.
+- Structure of arrays support (SOA).
+- New basic types references (f32,u8…).
+- Tuple and vector math support. 
+
 ### 🤔 Why? 🤔
 
 Planned to use in Vulkan API node.js projects.
