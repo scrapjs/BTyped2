@@ -4,6 +4,7 @@
 
 ### 📦 `v2.1` teaser? 📦
 I have some plans about next-gen update for BTyped2 `v2.1`.
+- Memory pool, manager or allocator.
 - Structure of arrays support (SOA).
 - New basic types refs (`f32`,`u8`…).
 - Tuple and vector math support. 
