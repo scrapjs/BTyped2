@@ -1,4 +1,4 @@
-import { AsBigInt, AsInt, CTypes, AddressOf } from "../Utils/Utils.mjs";
+import { AsBigInt, AsInt, CTypes, CStructs, AddressOf } from "../Utils/Utils.mjs";
 
 //
 export default class ArrayView {
@@ -35,44 +35,72 @@ export default class ArrayView {
     $has($name) { return (this.#length > $name && $name >= 0); };
 
     //
-    $get($index) {
-        $index = parseInt($index);
-        const $name = this.#layout.$typed;
-        const $memT = this.#layout;
+    $get($name, $ref = false) {
+        const $index = parseInt($name) || 0;
 
-        // get primitive
-        const $target = (this.$target instanceof DataView) ? this.$target : new DataView(this.$target, 0);
-        return $target["get" + ($name.includes("int64") ? "Big" : "") + ($name.charAt(0).toUpperCase() + $name.slice(1))]($index * $memT.$byteLength + this.#byteOffset, true);
+        // getting an member type
+        let $T = this.#layout?.$typed ?? this.#layout;
+        if ($T == "*" && !$ref) { $T = this.#layout?.$opt ?? this.#layout; };
+        if ((typeof $T == "string") && (CTypes.has($T) ?? CStructs.has($T))) { $T = CTypes.get($T) ?? CStructs.get($T); };
+
+        // an-struct or arrays
+        if (typeof $T == "object") {
+            if ($T == this.#layout?.$opt) { // faster version, optimal
+                return new (this.#layout?.$opt)(this.$target, (this.#layout.$byteLength * $index) + this.#byteOffset, /* in theory, possible array of arrays */ this.$length);
+            }
+            const ref = new Proxy($T.$view(this.$target, (this.#layout.$byteLength * $index) + this.#byteOffset, /* in theory, possible array of arrays */ 1, false), new ProxyHandle($T));
+            return $ref && ($T != this.#layout) ? ref["*"] : ref;
+        }
+
+        {   // get primitive (legacy)
+            const $target = (this.$target instanceof DataView) ? this.$target : new DataView(this.$target, 0);
+            const $getter = "get" + ($T.includes?.("int64") ? "Big" : "") + ($T.charAt(0).toUpperCase() + $T.slice(1));
+            if ($target[$getter]) { return $target[$getter]($index * $memT.$byteLength + this.#byteOffset, true); }
+        }
     }
 
-    //
+    // sort of legacy...
     $select($index = 0, $length = 1) {
-        return new this.#layout.$classOf(this.$buffer, $index * this.#layout.$byteLength + this.#byteOffset + (this.$target?.byteOffset || 0), Math.min($length, this.$length - $index));
+        return new this.#layout.$opt(this.$buffer, $index * this.#layout.$byteLength + this.#byteOffset + (this.$target?.byteOffset || 0), Math.min($length, this.$length - $index));
     }
 
     // 
-    $set($index = 0, $member = 0) {
-        //
-        $index = parseInt($index);
-        const $name = this.#layout.$typed;
-        const $memT = this.#layout;
-
-        // optimized operation
-        if (Array.isArray($member) || ArrayBuffer.isView($member)) {
-            this.$select($index, $member.length).set($member);
-            return true;
-        }
+    $set($name = "*", $member = 0) {
+        const $obj = this.$get($name, true);
+        const $index = parseInt($name);
 
         // assign members (if struct to struct, will try to recursively)
-        if ($name?.includes?.("int64")) { $member = AsBigInt($member); }
-        if ($name?.includes?.("int32")) { $member = AsInt($member); }
+        const $T = this.#layout?.$typed ?? this.#layout;
+
+        // optimized operation for array-view
+        if ((Array.isArray($member) || ArrayBuffer.isView($member)) && typeof $obj?.$select == "function") { 
+            $obj["*"].set($member); return true;
+        }
+
+        //
+        if (typeof $obj == "object" && typeof $member == "object") { 
+            Object.assign($obj, $member); return true;
+        }
 
         // set primitive
+        if (typeof $member == "number" || typeof $member == "bigint")
         {
-            if ($name.includes("int64")) { $member = BigInt($member); };
-            const $target = (this.$target instanceof DataView) ? this.$target : new DataView(this.$target, 0);
-            $target["set" + ($name.includes("int64") ? "Big" : "") + ($name.charAt(0).toUpperCase() + $name.slice(1))]($index * $memT.$byteLength + this.#byteOffset, $member, true); 
+            if (typeof $T == "string") {
+                // legacy mode
+                const $target = (this.$target instanceof DataView) ? this.$target : new DataView(this.$target, 0);
+                const $setter = "set" + ($T.includes("int64") ? "Big" : "") + ($T.charAt(0).toUpperCase() + $T.slice(1));
+
+                //
+                if ($T?.includes?.("int64")) { $member = AsBigInt($member); }
+                if ($T?.includes?.("int32")) { $member = AsInt($member); }
+                if ($target[$setter]) { $target[$setter](this.#byteOffset + $index, $member, true); }
+            } else {
+                // better mode
+                $obj["*"] = $member;
+            }
         };
+
+        //
         return true;
     }
 };

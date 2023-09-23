@@ -1,4 +1,5 @@
 import StructView from "./StructView.mjs";
+import ArrayView from "./ArrayView.mjs";
 import ProxyHandle from "./ProxyHandle.mjs";
 import StructType from "./StructType.mjs";
 import { CStructs, CTypes, AsInt } from "../Utils/Utils.mjs";
@@ -25,7 +26,7 @@ export default class StructLayout {
     get $layout() { return this.#layout; }
 
     //
-    $view(target, byteOffset = 0, length = 1) { return new StructView(this, target, byteOffset, length); }
+    $view(target, byteOffset = 0, length = 1, array = false) { return new (array ? ArrayView : StructView)(this, target, byteOffset, length); }
     #wrap(buffer, byteOffset = 0, length = 1) { return new Proxy(this.$view(buffer, byteOffset, length), new ProxyHandle(this)); }
 
     // $fn - field name

@@ -23,7 +23,7 @@ export default class StructView {
     get $length() { return this.#length; };
     get $byteOffset() { return this.#byteOffset; };
     get $byteLength() { return (this.$length * this.#layout.$byteLength); };
-    get $ownKeys() { return [...this.#layout.$layout.keys(), ...Array.from({length: this.#length}, (_, i) => i)]; };
+    get $ownKeys() { return [...this.#layout.$layout.keys(), /*...Array.from({length: this.#length}, (_, i) => i)*/]; };
     get $layout() { return this.#layout; };
     get $buffer() { return (this.$target?.buffer || this.$target); };
     get $address() { return (AddressOf(this.$target) || BigInt(this.$target.byteOffset) || 0n) + BigInt(this.$byteOffset); };
@@ -42,21 +42,20 @@ export default class StructView {
 
         // getting an member type
         let $T = $type.$name;
-        if ($T == "*") { return this.#layout; };
+        if ($T == "*" && !$ref) { $T = this.#layout?.$opt ?? this.#layout; };
         if ((typeof $T == "string") && ((CTypes.has($T) && !$type.$array) || CStructs.has($T))) { $T = (CTypes.has($T) && !$type.$array) ? CTypes.get($T) : CStructs.get($T); };
 
         // an-struct or arrays
         if (typeof $T == "object") {
-            const ref = new Proxy($T.$view(this.$target, (this.#layout.$byteLength * $index) + (this.#byteOffset + $type.$offset), ($type.$array || 1)), new ProxyHandle($T));
+            const ref = new Proxy($T.$view(this.$target, /*(this.#layout.$byteLength * $index) +*/ (this.#byteOffset + $type.$offset), ($type.$array || 1)), new ProxyHandle($T));
             return $ref && ($T != this.#layout) ? ref["*"] : ref;
         }
 
-        // get primitive
-        const $target = (this.$target instanceof DataView) ? this.$target : new DataView(this.$target, 0);
-        const $getter = "get" + ($T.includes?.("int64") ? "Big" : "") + ($T.charAt(0).toUpperCase() + $T.slice(1));
-
-        //
-        if ($target[$getter]) { return $target[$getter](this.#byteOffset + $type.$offset, true); }
+        {   // get primitive (legacy)
+            const $target = (this.$target instanceof DataView) ? this.$target : new DataView(this.$target, 0);
+            const $getter = "get" + ($T.includes?.("int64") ? "Big" : "") + ($T.charAt(0).toUpperCase() + $T.slice(1));
+            if ($target[$getter]) { return $target[$getter](this.#byteOffset + $type.$offset, true); }
+        }
 
         //
         return null;
@@ -84,6 +83,7 @@ export default class StructView {
         if (typeof $member == "number" || typeof $member == "bigint")
         {
             if (typeof $T == "string") {
+                // legacy mode
                 const $target = (this.$target instanceof DataView) ? this.$target : new DataView(this.$target, 0);
                 const $setter = "set" + ($T.includes("int64") ? "Big" : "") + ($T.charAt(0).toUpperCase() + $T.slice(1));
 
@@ -92,6 +92,7 @@ export default class StructView {
                 if ($T?.includes?.("int32")) { $member = AsInt($member); }
                 if ($target[$setter]) { $target[$setter](this.#byteOffset + $type.$offset, $member, true); }
             } else {
+                // better mode
                 $obj["*"] = $member;
             }
         };

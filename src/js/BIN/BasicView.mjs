@@ -1,15 +1,18 @@
 import ProxyHandle from "./ProxyHandle.mjs";
-import { AsBigInt, AsInt, CTypes, CStructs, AddressOf } from "../Utils/Utils.mjs";
+import { AsBigInt, AsInt, CTypes, AddressOf } from "../Utils/Utils.mjs";
+import { Float16Array } from "/@petamoriken/float16";
 
 //
 export class BasicLayout {
     #typed = "uint8";
     #byteLength = 1;
+    #opt = Uint8Array;
 
     //
-    constructor($typed = "uint8", $byteLength = 1) {
+    constructor($typed = "uint8", $byteLength = 1, $opt = Uint8Array) {
         this.#typed = $name.$typed ?? $typed;
         this.#byteLength = $byteLength;
+        this.#opt = $opt;
 
         //
         if (this.#typed) { CTypes.set(this.#typed, this); };
@@ -40,6 +43,7 @@ export class BasicLayout {
     }
 
     //
+    get $opt() { return this.#opt; };
     get $typed() { return this.#typed; };
     get $byteLength() { return this.#byteLength; };
 };
@@ -102,14 +106,14 @@ export default class BasicView {
 };
 
 //
-new BasicLayout("uint8", 1);
-new BasicLayout("int8", 1);
-new BasicLayout("uint16", 2);
-new BasicLayout("int16", 2);
-new BasicLayout("float16", 2);
-new BasicLayout("uint32", 4);
-new BasicLayout("int32", 4);
-new BasicLayout("float32", 4);
-new BasicLayout("uint64", 8);
-new BasicLayout("int64", 8);
-new BasicLayout("float64", 8);
+new BasicLayout("uint8", 1, Uint8Array);
+new BasicLayout("int8", 1, Int8Array);
+new BasicLayout("uint16", 2, Uint16Array);
+new BasicLayout("int16", 2, Int16Array);
+new BasicLayout("float16", 2, Float16Array);
+new BasicLayout("uint32", 4, Uint32Array);
+new BasicLayout("int32", 4, Int32Array);
+new BasicLayout("float32", 4, Float32Array);
+new BasicLayout("uint64", 8, BigUint64Array);
+new BasicLayout("int64", 8, BigInt64Array);
+new BasicLayout("float64", 8, Float64Array);
