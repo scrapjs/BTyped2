@@ -2,7 +2,7 @@ import { Float16Array } from "@petamoriken/float16";
 import ArrayView from "./ArrayView.mjs";
 import ProxyHandle from "./ProxyHandle.mjs";
 import { StructWrap } from "./ProxyHandle.mjs";
-import { CTypes } from "../Utils/Utils.mjs";
+import { CStructs, CTypes } from "../Utils/Utils.mjs";
 
 //
 export default class ArrayLayout {
@@ -17,7 +17,7 @@ export default class ArrayLayout {
         this.#classOf = classOf;
 
         //
-        if (this.#typed) { CTypes.set(this.#typed, this); };
+        if (this.#typed) { CStructs.set(this.#typed, this); };
     }
 
     //

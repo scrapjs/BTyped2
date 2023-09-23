@@ -36,17 +36,19 @@ export default class StructView {
 
     //
     $has($name) { return (this.#layout.$layout.has($name)); };
-    $get($name) {
+    $get($name = "*", $ref = false) {
         const $type = this.#layout.$typeof($name);
         const $index = $type?.$index || 0;
 
         // getting an member type
         let $T = $type.$name;
-        if ((typeof $T == "string") && (CStructs.has($T) || (CTypes.has($T) && $type.$array))) { $T = (CStructs.get($T) || CTypes.get($T)); };
+        if ($T == "*") { return this.#layout; };
+        if ((typeof $T == "string") && ((CTypes.has($T) && !$type.$array) || CStructs.has($T))) { $T = (CTypes.has($T) && !$type.$array) ? CTypes.get($T) : CStructs.get($T); };
 
         // an-struct or arrays
         if (typeof $T == "object") {
-            return new Proxy($T.$view(this.$target, (this.#layout.$byteLength * $index) + (this.#byteOffset + $type.$offset), ($type.$array || 1)), new ProxyHandle($T));
+            const ref = new Proxy($T.$view(this.$target, (this.#layout.$byteLength * $index) + (this.#byteOffset + $type.$offset), ($type.$array || 1)), new ProxyHandle($T));
+            return $ref && ($T != this.#layout) ? ref["*"] : ref;
         }
 
         // get primitive
@@ -61,9 +63,9 @@ export default class StructView {
     }
 
     // 
-    $set($name, $member = 0) {
+    $set($name = "*", $member = 0) {
         const $type = this.#layout.$typeof($name);
-        const $obj = this.$get($name);
+        const $obj = this.$get($name, true);
 
         // assign members (if struct to struct, will try to recursively)
         const $T = $type.$name;
@@ -79,15 +81,19 @@ export default class StructView {
         }
 
         // set primitive
-        if ((typeof $T == "string") && (typeof $member == "number" || typeof $member == "bigint")) 
+        if (typeof $member == "number" || typeof $member == "bigint")
         {
-            const $target = (this.$target instanceof DataView) ? this.$target : new DataView(this.$target, 0);
-            const $setter = "set" + ($T.includes("int64") ? "Big" : "") + ($T.charAt(0).toUpperCase() + $T.slice(1));
+            if (typeof $T == "string") {
+                const $target = (this.$target instanceof DataView) ? this.$target : new DataView(this.$target, 0);
+                const $setter = "set" + ($T.includes("int64") ? "Big" : "") + ($T.charAt(0).toUpperCase() + $T.slice(1));
 
-            //
-            if ($T?.includes?.("int64")) { $member = AsBigInt($member); }
-            if ($T?.includes?.("int32")) { $member = AsInt($member); }
-            if ($target[$setter]) { $target[$setter](this.#byteOffset + $type.$offset, $member, true); }
+                //
+                if ($T?.includes?.("int64")) { $member = AsBigInt($member); }
+                if ($T?.includes?.("int32")) { $member = AsInt($member); }
+                if ($target[$setter]) { $target[$setter](this.#byteOffset + $type.$offset, $member, true); }
+            } else {
+                $obj["*"] = $member;
+            }
         };
 
         //
