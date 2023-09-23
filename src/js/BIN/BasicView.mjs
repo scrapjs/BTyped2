@@ -1,7 +1,8 @@
 import ProxyHandle from "./ProxyHandle.mjs";
 import { AsBigInt, AsInt, CTypes, CStructs, AddressOf } from "../Utils/Utils.mjs";
-import { Float16Array } from "/@petamoriken/float16";
+import { Float16Array } from "/@petamoriken/float16/browser/float16.mjs";
 import ArrayView from "./ArrayView.mjs";
+import { ViewUtils } from "./StructType.mjs";
 
 //
 export class BasicLayout {
@@ -11,7 +12,7 @@ export class BasicLayout {
 
     //
     constructor($typed = "uint8", $byteLength = 1, $opt = Uint8Array) {
-        this.#typed = $name.$typed ?? $typed;
+        this.#typed = $typed?.$typed ?? $typed;
         this.#byteLength = $byteLength;
         this.#opt = $opt;
 
@@ -58,6 +59,16 @@ export default class BasicView extends ViewUtils {
     //
     get $length() { return 1; };
     get $ownKeys() { return ["*"]; };
+
+    //
+    $get($name = "*", $ref = false) {
+        return super.$get(0, this.$layout.$typed, $ref);
+    }
+
+    // 
+    $set($name = "*", $member = 0) {
+        return super.$set(0, $member, this.$layout.$typed);
+    }
 };
 
 //

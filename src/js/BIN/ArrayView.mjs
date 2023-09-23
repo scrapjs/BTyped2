@@ -5,7 +5,7 @@ export default class ArrayView extends ViewUtils {
 
     //
     constructor(layout, target, byteOffset = 0, length = 1) {
-        super(layout, target, length);
+        super(layout, target, byteOffset, length);
     }
 
     //
@@ -19,15 +19,14 @@ export default class ArrayView extends ViewUtils {
 
     //
     $get($name = "*", $ref = false) {
-        const $index = parseInt($name);
-        const $offset = $index * this.$byteLength;
+        const $index = parseInt($name) || 0;
         const $T = this.$layout?.$typed ?? this.$layout;
-        return $ref ? super.$ref($offset, $T, $ref) : super.$get($offset, $T, $ref);
+        return super.$ref($index * this.$layout.$byteLength, $T, $ref, this.$length);
     }
 
     // 
     $set($name = "*", $member = 0) {
-        const $index = parseInt($name);
-        return super.$set($index * this.$byteLength, $member, this.$layout?.$typed ?? this.$layout);
+        const $index = parseInt($name) || 0;
+        return super.$set($index * this.$layout.$byteLength, $member, this.$layout?.$typed ?? this.$layout);
     }
 };

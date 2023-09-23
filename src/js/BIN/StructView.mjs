@@ -4,7 +4,7 @@ import { ViewUtils } from "./StructType.mjs";
 export default class StructView extends ViewUtils {
     //
     constructor(layout, target, byteOffset = 0, length = 1) {
-        super(layout, target, length);
+        super(layout, target, byteOffset, length);
     }
 
     //
@@ -20,12 +20,12 @@ export default class StructView extends ViewUtils {
     $has($name) { return (this.$layout.$layout.has($name)); };
     $get($name = "*", $ref = false) {
         const $type = this.$layout.$typeof($name);
-        return $ref ? super.$ref($type.$offset, $type.$name, $ref) : super.$get($type.$offset, $type.$name, $ref);
+        return super.$ref($type.$offset || 0, $type.$name, $ref, $type.$array);
     }
 
     // 
     $set($name = "*", $member = 0) {
         const $type = this.$layout.$typeof($name);
-        return super.$set($type.$offset || 0, $member, $type.$name ?? this.$layout);
+        return super.$set($type.$offset || 0, $member, $type.$name ?? this.$layout, $type.$array);
     }
 };

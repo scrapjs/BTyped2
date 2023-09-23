@@ -8,6 +8,7 @@
   },
   "type": "module",
   "scripts": {
+    "serve": "fastify start test/serve.mjs --port 4000 --debug",
     "test": "echo \"Error: no test specified\" && exit 1",
     "dev": "vite --debug --port 4000 --host",
     "build": "vite build --debug --sourcemap inline",
@@ -37,22 +38,26 @@
   },
   "homepage": "https://github.com/BlazerNEO/BTyped2#readme",
   "dependencies": {
+    "@gluon-framework/gluon": "^0.14.0",
     "@petamoriken/float16": "^3.8.1",
-    "@rollup/plugin-terser": "^0.4.3",
-    "bootstrap-icons": "^1.10.5",
     "jsox": "^1.2.118",
-    "pug": "^3.0.2",
+	"@fastify/autoload": "^5.7.1",
+    "@fastify/cors": "^8.4.0",
+    "@fastify/static": "^6.11.2",
+	"fastify": "^4.23.2"
+  },
+  "devDependencies": {
+    "lightningcss": "^1.21.5",
+    "postcss": "^8.4.27",
+    "sass": "^1.64.2",
+    "stylus": "^0.59.0",
+	"@rollup/plugin-terser": "^0.4.3",
+	"pug": "^3.0.2",
     "scss": "^0.2.4",
     "vite": "^4.4.7",
     "vite-plugin-cross-origin-isolation": "^0.1.6",
     "vite-plugin-pug": "^0.3.2",
     "vite-plugin-pwa": "^0.16.4",
     "vite-plugin-sass": "^0.1.0"
-  },
-  "devDependencies": {
-    "lightningcss": "^1.21.5",
-    "postcss": "^8.4.27",
-    "sass": "^1.64.2",
-    "stylus": "^0.59.0"
   }
 }

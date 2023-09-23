@@ -1,16 +1,17 @@
 import { CStructs, CTypes, AsInt } from "../Utils/Utils.mjs";
+import ProxyHandle from "./ProxyHandle.mjs";
 
 //
 export default class StructType {
     #name = "uint8";
     #offset = 0;
-    #array = false;
+    #array = null;
     #default = 0;
     #index = 0;
 
     //
     static $parse($name) {
-        let $array = false;
+        let $array = null;
         let $offset = 0;
         let $default = 0;
 
@@ -36,7 +37,7 @@ export default class StructType {
     }
 
     //
-    constructor($name = "uint8", $offset = 0, $array = false, $default = 0, $index = 0) {
+    constructor($name = "uint8", $offset = 0, $array = null, $default = 0, $index = 0) {
         this.#name = ($name instanceof StructType ? $name.$name : $name);
         this.#offset = $offset;
         this.#array = $array;
@@ -80,40 +81,42 @@ export class ViewUtils {
     }
 
     //
-    $ref($offset = 0, $T, $ref = false) {
+    $ref($offset = 0, $T, $ref = false, $length = null) {
 
         // getting an member type
-        if ($T == "*" && !$ref) { $T = this.$layout?.$opt ?? this.$layout; };
         if ((typeof $T == "string") && (CTypes.has($T) ?? CStructs.has($T))) { $T = CTypes.get($T) ?? CStructs.get($T); };
 
         // an-struct or arrays
+        const $opt = $T?.$opt;
+        if (!$ref && $length != null) { $T = $T?.$opt ?? $T; };
+        if ($T == $opt) { // faster version, optimal
+            return new ($opt)(this.$target, $offset + this.$byteOffset, /* in theory, possible array of arrays */ $length);
+        }
         if (typeof $T == "object") {
-            if ($T == this.$layout?.$opt) { // faster version, optimal
-                return new (this.$layout?.$opt)(this.$target, $offset + this.$byteOffset, /* in theory, possible array of arrays */ this.$length);
-            }
-            const ref = new Proxy($T.$view(this.$target, $offset + this.$byteOffset, /* in theory, possible array of arrays */ 1, false), new ProxyHandle($T));
-            return $ref && ($T != this.$layout) ? ref["*"] : ref;
+            const ref = new Proxy($T.$view(this.$target, $offset + this.$byteOffset, /* in theory, possible array of arrays */ $length ?? 1, $length != null), new ProxyHandle($T));
+            return !$ref && ($T != this.$layout) ? ref["*"] : ref;
         }
     }
 
     //
-    $get($offset = 0, $T = null) {
+    $get($offset = 0, $T = null, $ref = false) {
         // getting an member type
         $T ??= this.$layout.$typed;
-        const $target = (this.$target instanceof DataView) ? this.$target : new DataView(this.$target, 0);
-        const $getter = "get" + ($T.includes?.("int64") ? "Big" : "") + ($T.charAt(0).toUpperCase() + $T.slice(1));
+        if (typeof $T == "string") {
+            const $target = (this.$target instanceof DataView) ? this.$target : new DataView(this.$target, 0);
+            const $getter = "get" + ($T.includes?.("int64") ? "Big" : "") + ($T.charAt(0).toUpperCase() + $T.slice(1));
 
-        //
-        if ($target[$getter]) { return $target[$getter](this.$byteOffset + $offset, true); }
-
+            //
+            if ($target[$getter]) { return $target[$getter](this.$byteOffset + $offset, true); }
+        }
         //
         return null;
     }
 
     // 
-    $set($offset = 0, $member = 0, $T = null) {
+    $set($offset = 0, $member = 0, $T = null, $length = null) {
         $T ??= this.$layout.$typed;
-        const $obj = this.$ref($offset, $T, true);
+        const $obj = this.$ref($offset, $T, true, $length);
 
         // optimized operation for array-view
         if ((Array.isArray($member) || ArrayBuffer.isView($member)) && typeof $obj?.$select == "function") {
@@ -128,7 +131,7 @@ export class ViewUtils {
         //
         if (typeof $member == "number" || typeof $member == "bigint")
         {   // set primitive
-            if (typeof $T == "string") {
+            if (typeof $T == "string" || $T == "*") {
                 const $target = (this.$target instanceof DataView) ? this.$target : new DataView(this.$target, 0);
                 const $setter = "set" + ($T.includes("int64") ? "Big" : "") + ($T.charAt(0).toUpperCase() + $T.slice(1));
 
