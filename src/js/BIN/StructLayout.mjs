@@ -31,7 +31,7 @@ export default class StructLayout {
 
     // $fn - field name
     $typeof($fn) {
-        let $array = null, $offset = 0, $default = 0, $name = "", $cvt = false;
+        let $array = false, $offset = 0, $default = 0, $name = "", $cvt = false;
 
         // make type conversion description
         if (typeof $fn == "string" && ($fn = $fn.trim()).indexOf(":") >= 0) {

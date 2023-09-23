@@ -11,7 +11,7 @@ export default class StructType {
 
     //
     static $parse($name) {
-        let $array = null;
+        let $array = false;
         let $offset = 0;
         let $default = 0;
 
@@ -37,7 +37,7 @@ export default class StructType {
     }
 
     //
-    constructor($name = "uint8", $offset = 0, $array = null, $default = 0, $index = 0) {
+    constructor($name = "uint8", $offset = 0, $array = false, $default = 0, $index = 0) {
         this.#name = ($name instanceof StructType ? $name.$name : $name);
         this.#offset = $offset;
         this.#array = $array;
@@ -81,19 +81,19 @@ export class ViewUtils {
     }
 
     //
-    $ref($offset = 0, $T, $ref = false, $length = null) {
+    $ref($offset = 0, $T, $ref = false, $length = false) {
 
         // getting an member type
         if ((typeof $T == "string") && (CTypes.has($T) ?? CStructs.has($T))) { $T = CTypes.get($T) ?? CStructs.get($T); };
 
         // an-struct or arrays
         const $opt = $T?.$opt;
-        if (!$ref && $length != null) { $T = $T?.$opt ?? $T; };
+        if (!$ref && $length) { $T = $T?.$opt ?? $T; };
         if ($T == $opt) { // faster version, optimal
             return new ($opt)(this.$target, $offset + this.$byteOffset, /* in theory, possible array of arrays */ $length);
         }
         if (typeof $T == "object") {
-            const ref = new Proxy($T.$view(this.$target, $offset + this.$byteOffset, /* in theory, possible array of arrays */ $length ?? 1, $length != null), new ProxyHandle($T));
+            const ref = new Proxy($T.$view(this.$target, $offset + this.$byteOffset, /* in theory, possible array of arrays */ $length || 1, !!$length), new ProxyHandle($T));
             return !$ref && ($T != this.$layout) ? ref["*"] : ref;
         }
     }
@@ -114,7 +114,7 @@ export class ViewUtils {
     }
 
     // 
-    $set($offset = 0, $member = 0, $T = null, $length = null) {
+    $set($offset = 0, $member = 0, $T = null, $length = false) {
         $T ??= this.$layout.$typed;
         const $obj = this.$ref($offset, $T, true, $length);
 
