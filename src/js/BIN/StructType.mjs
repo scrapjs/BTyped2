@@ -51,3 +51,98 @@ export default class StructType {
     get $default() { return this.#default; };
     get $index() { return this.#index; };
 };
+
+//
+export class ViewUtils {
+    $target = null;
+    $layout = null;
+    $byteOffset = 0;
+    $length = 1;
+
+    //
+    constructor(layout, target, byteOffset = 0, $length = 1) {
+        this.$layout = (typeof layout == "string") ? CTypes.get(layout) : layout;
+        this.$byteOffset = byteOffset;
+        this.$length = $length;
+
+        //
+        Object.defineProperty(this, '$target', { get: typeof target == "function" ? target : ()=>target });
+    }
+
+    //
+    get $address() { return (AddressOf(this.$target) || BigInt(this.$target.byteOffset) || 0n) + BigInt(this.$byteOffset); };
+    get $isView() { return true; };
+    get $buffer() { return (this.$target?.buffer || this.$target); };
+
+    // sort of legacy...
+    $select($offset = 0, $length = 1) {
+        return new this.$layout.$opt(this.$buffer, $offset + this.$byteOffset + (this.$target?.byteOffset || 0), Math.min($length, this.$length - ($offset/this.$layout.$byteLength)));
+    }
+
+    //
+    $ref($offset = 0, $T, $ref = false) {
+
+        // getting an member type
+        if ($T == "*" && !$ref) { $T = this.$layout?.$opt ?? this.$layout; };
+        if ((typeof $T == "string") && (CTypes.has($T) ?? CStructs.has($T))) { $T = CTypes.get($T) ?? CStructs.get($T); };
+
+        // an-struct or arrays
+        if (typeof $T == "object") {
+            if ($T == this.$layout?.$opt) { // faster version, optimal
+                return new (this.$layout?.$opt)(this.$target, $offset + this.$byteOffset, /* in theory, possible array of arrays */ this.$length);
+            }
+            const ref = new Proxy($T.$view(this.$target, $offset + this.$byteOffset, /* in theory, possible array of arrays */ 1, false), new ProxyHandle($T));
+            return $ref && ($T != this.$layout) ? ref["*"] : ref;
+        }
+    }
+
+    //
+    $get($offset = 0, $T = null) {
+        // getting an member type
+        $T ??= this.$layout.$typed;
+        const $target = (this.$target instanceof DataView) ? this.$target : new DataView(this.$target, 0);
+        const $getter = "get" + ($T.includes?.("int64") ? "Big" : "") + ($T.charAt(0).toUpperCase() + $T.slice(1));
+
+        //
+        if ($target[$getter]) { return $target[$getter](this.$byteOffset + $offset, true); }
+
+        //
+        return null;
+    }
+
+    // 
+    $set($offset = 0, $member = 0, $T = null) {
+        $T ??= this.$layout.$typed;
+        const $obj = this.$ref($offset, $T, true);
+
+        // optimized operation for array-view
+        if ((Array.isArray($member) || ArrayBuffer.isView($member)) && typeof $obj?.$select == "function") {
+            $obj["*"].set($member); return true;
+        }
+
+        //
+        if (typeof $obj == "object" && typeof $member == "object") { 
+            Object.assign($obj, $member); return true;
+        }
+
+        //
+        if (typeof $member == "number" || typeof $member == "bigint")
+        {   // set primitive
+            if (typeof $T == "string") {
+                const $target = (this.$target instanceof DataView) ? this.$target : new DataView(this.$target, 0);
+                const $setter = "set" + ($T.includes("int64") ? "Big" : "") + ($T.charAt(0).toUpperCase() + $T.slice(1));
+
+                //
+                if ($T?.includes?.("int64")) { $member = AsBigInt($member); }
+                if ($T?.includes?.("int32")) { $member = AsInt($member); }
+                if ($target[$setter]) { $target[$setter](this.$byteOffset + $offset, $member, true); }
+            } else {
+                // better mode
+                $obj["*"] = $member;
+            }
+        };
+
+        //
+        return true;
+    }
+};

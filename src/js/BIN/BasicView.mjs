@@ -1,6 +1,7 @@
 import ProxyHandle from "./ProxyHandle.mjs";
-import { AsBigInt, AsInt, CTypes, AddressOf } from "../Utils/Utils.mjs";
+import { AsBigInt, AsInt, CTypes, CStructs, AddressOf } from "../Utils/Utils.mjs";
 import { Float16Array } from "/@petamoriken/float16";
+import ArrayView from "./ArrayView.mjs";
 
 //
 export class BasicLayout {
@@ -19,7 +20,7 @@ export class BasicLayout {
     }
 
     //
-    $view(target, byteOffset = 0, length = 1) { return new BasicView(this, target, byteOffset, length); }
+    $view(target, byteOffset = 0, length = 1, array = false) { return new (array ? ArrayView : BasicView)(this, target, byteOffset, length); }
     #wrap(buffer, byteOffset = 0, length = 1) { return new Proxy(this.$view(buffer, byteOffset, length), new ProxyHandle(this)); }
 
     //
@@ -49,60 +50,14 @@ export class BasicLayout {
 };
 
 //
-export default class BasicView {
-    $target = null;
-    #layout = null;
-    #byteOffset = 0;
-    #length = 1;
-
-    //
+export default class BasicView extends ViewUtils {
     constructor(layout, target, byteOffset = 0, _ = 1) {
-        this.#layout = (typeof layout == "string") ? CTypes.get(layout) : layout;
-        this.#byteOffset = byteOffset;
-        this.#length = _;
-
-        //
-        Object.defineProperty(this, '$target', { get: typeof target == "function" ? target : ()=>target });
+        super(layout, target, byteOffset, _);
     }
 
     //
-    get $isView() { return true; };
     get $length() { return 1; };
-    get $byteOffset() { return this.#byteOffset; };
-    get $byteLength() { return (this.#layout.$byteLength); };
     get $ownKeys() { return ["*"]; };
-    get $layout() { return this.#layout; };
-    get $buffer() { return (this.$target?.buffer || this.$target); };
-    get $address() { return (AddressOf(this.$target) || BigInt(this.$target.byteOffset) || 0n) + BigInt(this.$byteOffset); };
-
-    //
-    $get(_ = "*") {
-        // getting an member type
-        const $T = this.#layout.$typed;
-        const $target = (this.$target instanceof DataView) ? this.$target : new DataView(this.$target, 0);
-        const $getter = "get" + ($T.includes?.("int64") ? "Big" : "") + ($T.charAt(0).toUpperCase() + $T.slice(1));
-
-        //
-        if ($target[$getter]) { return $target[$getter](this.#byteOffset, true); }
-
-        //
-        return null;
-    }
-
-    // 
-    $set(_ = "*", $member = 0) {
-        const $T = this.#layout.$typed;
-        const $target = (this.$target instanceof DataView) ? this.$target : new DataView(this.$target, 0);
-        const $setter = "set" + ($T.includes("int64") ? "Big" : "") + ($T.charAt(0).toUpperCase() + $T.slice(1));
-
-        //
-        if ($T?.includes?.("int64")) { $member = AsBigInt($member); }
-        if ($T?.includes?.("int32")) { $member = AsInt($member); }
-        if ($target[$setter]) { $target[$setter](this.#byteOffset, $member, true); }
-
-        //
-        return true;
-    }
 };
 
 //
