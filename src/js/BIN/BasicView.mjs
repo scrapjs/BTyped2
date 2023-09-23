@@ -11,7 +11,7 @@ export class BasicLayout {
     #opt = Uint8Array;
 
     //
-    constructor($typed = "uint8", $byteLength = 1, $opt = Uint8Array) {
+    constructor($typed = "uint8", _ = [], $byteLength = 1, $opt = Uint8Array) {
         this.#typed = $typed?.$typed ?? $typed;
         this.#byteLength = $byteLength;
         this.#opt = $opt;
@@ -37,9 +37,9 @@ export class BasicLayout {
 
     // 
     $create(objOrLength = 1, length = null) {
-        const obj = typeof objOrLength == "object" ? objOrLength : null; length ??= (obj ? 1 : objOrLength);
+        const obj = objOrLength; length ??= obj?.length;
         const ab = new (typeof SharedArrayBuffer != "undefined" ? SharedArrayBuffer : ArrayBuffer)(length * this.#byteLength);
-        const px = new Proxy(this.$view(ab, 0, length), new ProxyHandle(this)).$initial;
+        const px = new Proxy(this.$view(ab, 0, length??1, !!length), new ProxyHandle(this)).$initial;
         if (obj != null) { Object.assign(px, obj); };
         return px;
     }
@@ -72,14 +72,14 @@ export default class BasicView extends ViewUtils {
 };
 
 //
-new BasicLayout("uint8", 1, Uint8Array);
-new BasicLayout("int8", 1, Int8Array);
-new BasicLayout("uint16", 2, Uint16Array);
-new BasicLayout("int16", 2, Int16Array);
-new BasicLayout("float16", 2, Float16Array);
-new BasicLayout("uint32", 4, Uint32Array);
-new BasicLayout("int32", 4, Int32Array);
-new BasicLayout("float32", 4, Float32Array);
-new BasicLayout("uint64", 8, BigUint64Array);
-new BasicLayout("int64", 8, BigInt64Array);
-new BasicLayout("float64", 8, Float64Array);
+new BasicLayout("uint8", [], 1, Uint8Array);
+new BasicLayout("int8", [], 1, Int8Array);
+new BasicLayout("uint16", [], 2, Uint16Array);
+new BasicLayout("int16", [], 2, Int16Array);
+new BasicLayout("float16", [], 2, Float16Array);
+new BasicLayout("uint32", [], 4, Uint32Array);
+new BasicLayout("int32", [], 4, Int32Array);
+new BasicLayout("float32", [], 4, Float32Array);
+new BasicLayout("uint64", [], 8, BigUint64Array);
+new BasicLayout("int64", [], 8, BigInt64Array);
+new BasicLayout("float64", [], 8, Float64Array);

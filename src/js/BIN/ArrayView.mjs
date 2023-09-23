@@ -21,7 +21,7 @@ export default class ArrayView extends ViewUtils {
     $get($name = "*", $ref = false) {
         const $index = parseInt($name) || 0;
         const $T = this.$layout?.$typed ?? this.$layout;
-        return super.$ref($index * this.$layout.$byteLength, $T, $ref, this.$length);
+        return super.$ref($index * this.$layout.$byteLength, $T, $ref, $name == "*" ? this.$length : null);
     }
 
     // 

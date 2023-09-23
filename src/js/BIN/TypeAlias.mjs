@@ -1,4 +1,4 @@
-import { CStructs } from "../Utils/Utils.mjs";
+import { CStructs, CTypes } from "../Utils/Utils.mjs";
 
 //
 export default class TypeAlias {
@@ -19,8 +19,8 @@ export default class TypeAlias {
     get $target() { return this.#target; }
 
     //
-    $create(...$args) { return CStructs.get(this.#target).$create(...$args); }
-    $wrap(...$args) { return CStructs.get(this.#target).$wrap(...$args); }
-    $view(...$args) { return CStructs.get(this.#target).$view(...$args); }
+    $create(...$args) { return (CTypes.get(this.#target) ?? CStructs.get(this.#target)).$create(...$args); }
+    $wrap(...$args) { return (CTypes.get(this.#target) ?? CStructs.get(this.#target)).$wrap(...$args); }
+    $view(...$args) { return (CTypes.get(this.#target) ?? CStructs.get(this.#target)).$view(...$args); }
     $get($name) { return $name; }
 };
