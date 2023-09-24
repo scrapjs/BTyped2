@@ -5,6 +5,7 @@ import StructView from "./js/BIN/StructView.mjs";
 import ProxyHandle from "./js/BIN/ProxyHandle.mjs";
 import TypeAlias from "./js/BIN/TypeAlias.mjs";
 import StructType from "./js/BIN/StructType.mjs";
+import MemoryPool from "./js/BIN/MemoryPool.mjs";
 //import Tuple from "./js/Utils/Tuple.mjs";
 
 //
@@ -19,5 +20,5 @@ export * from "./js/Utils/Tuple.mjs";
 
 //
 export {
-    StructView, BasicView, StructLayout, ArrayView, ProxyHandle, TypeAlias, StructType, //Tuple
+    StructView, BasicView, StructLayout, ArrayView, ProxyHandle, TypeAlias, StructType, MemoryPool //Tuple
 }
