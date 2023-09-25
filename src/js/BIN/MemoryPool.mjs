@@ -87,11 +87,11 @@ export default class MemoryPool {
             const pm = new Promise((r,e)=>{ fr.onload = r, fr.onerror = e; });
             fr.readAsArrayBuffer(blob); await pm;
 
-            try {
+            //try {
                 return (await handle(fr.result, blob));
-            } catch(e) {
-                console.error(e);
-            }
+            //} catch(e) {
+                //console.error(e);
+            //}
 
         } else {
             this.reader = null;
@@ -144,6 +144,6 @@ export default class MemoryPool {
 
     //
     $u8a($c, $ptr, $l) {
-        return new Uint8Array($c.HEAP8.buffer, $c.HEAP8.byteOffset + ($ptr?.[0] || $ptr), $l);
+        return new Uint8Array($c.HEAP8.buffer, $c.HEAP8.byteOffset + ($ptr?.[0] || $ptr), $l?.["*"] ?? $l);
     }
 }
