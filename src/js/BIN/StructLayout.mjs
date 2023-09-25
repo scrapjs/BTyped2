@@ -26,8 +26,8 @@ export default class StructLayout {
     get $layout() { return this.#layout; }
 
     //
-    $view(target, byteOffset = 0, length = 1, array = false) { return new (array ? ArrayView : StructView)(this, target, byteOffset, length); }
-    #wrap(buffer, byteOffset = 0, length = 1) { return new Proxy(this.$view(buffer, byteOffset, length), new ProxyHandle(this)); }
+    $view(target, byteOffset = 0, length = false) { return new (!!length ? ArrayView : StructView)(this, target, byteOffset, length); }
+    #wrap(buffer, byteOffset = 0, length = false) { return new Proxy(this.$view(buffer, byteOffset, length), new ProxyHandle(this)); }
 
     // $fn - field name
     $typeof($fn) {
@@ -65,7 +65,7 @@ export default class StructLayout {
     }
 
     //
-    $wrap(buffer, byteOffset = 0, length = 1) {
+    $wrap(buffer, byteOffset = 0, length = false) {
         //if (buffer instanceof DataView) {
             //return this.#wrap(buffer.buffer, buffer.byteOffset + byteOffset, length);
         //} else
@@ -76,9 +76,9 @@ export default class StructLayout {
     }
 
     // 
-    $create(objOrLength = 1, length = null) {
-        const obj = typeof objOrLength == "object" ? objOrLength : null; length ??= (obj ? 1 : objOrLength);
-        const ab = new (typeof SharedArrayBuffer != "undefined" ? SharedArrayBuffer : ArrayBuffer)(length * this.#byteLength);
+    $create(objOrLength = 1, length = false) {
+        const obj = typeof objOrLength == "object" ? objOrLength : null; if (typeof objOrLength == "number") { length = objOrLength; };
+        const ab = new (typeof SharedArrayBuffer != "undefined" ? SharedArrayBuffer : ArrayBuffer)((length || (obj ? 1 : objOrLength)) * this.#byteLength);
         const px = new Proxy(this.$view(ab, 0, length), new ProxyHandle(this)).$initial;
         if (obj != null) { Object.assign(px, obj); };
         return px;

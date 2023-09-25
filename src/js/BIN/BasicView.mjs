@@ -21,11 +21,11 @@ export class BasicLayout {
     }
 
     //
-    $view(target, byteOffset = 0, length = 1, array = false) { return new (array ? ArrayView : BasicView)(this, target, byteOffset, length); }
-    #wrap(buffer, byteOffset = 0, length = 1) { return new Proxy(this.$view(buffer, byteOffset, length), new ProxyHandle(this)); }
+    $view(target, byteOffset = 0, length = false) { return new (!!length ? ArrayView : BasicView)(this, target, byteOffset, length); }
+    #wrap(buffer, byteOffset = 0, length = false) { return new Proxy(this.$view(buffer, byteOffset, length), new ProxyHandle(this)); }
 
     //
-    $wrap(buffer, byteOffset = 0, length = 1) {
+    $wrap(buffer, byteOffset = 0, length = false) {
         //if (buffer instanceof DataView) {
             //return this.#wrap(buffer.buffer, buffer.byteOffset + byteOffset, length);
         //} else
@@ -36,10 +36,10 @@ export class BasicLayout {
     }
 
     // 
-    $create(objOrLength = 1, length = null) {
-        const obj = objOrLength; length ??= obj?.length;
-        const ab = new (typeof SharedArrayBuffer != "undefined" ? SharedArrayBuffer : ArrayBuffer)(length * this.#byteLength);
-        const px = new Proxy(this.$view(ab, 0, length??1, !!length), new ProxyHandle(this)).$initial;
+    $create(objOrLength = 1, length = false) {
+        const obj = objOrLength; length ||= obj?.length;
+        const ab = new (typeof SharedArrayBuffer != "undefined" ? SharedArrayBuffer : ArrayBuffer)((length || objOrLength) * this.#byteLength);
+        const px = new Proxy(this.$view(ab, 0, length), new ProxyHandle(this)).$initial;
         if (obj != null) { Object.assign(px, obj); };
         return px;
     }

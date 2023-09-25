@@ -93,7 +93,7 @@ export class ViewUtils {
             return new ($opt)(this.$target, $offset + this.$byteOffset, /* in theory, possible array of arrays */ $length);
         }
         if (typeof $T == "object") {
-            const ref = new Proxy($T.$view(this.$target, $offset + this.$byteOffset, /* in theory, possible array of arrays */ $length || 1, !!$length), new ProxyHandle($T));
+            const ref = new Proxy($T.$view(this.$target, $offset + this.$byteOffset, /* in theory, possible array of arrays */ $length), new ProxyHandle($T));
             return !$ref && ($T != this.$layout) ? ref["*"] : ref;
         }
     }
