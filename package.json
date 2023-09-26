@@ -1,6 +1,6 @@
 {
   "name": "btyped2",
-  "version": "1.0.0",
+  "version": "2.1.0",
   "description": "New base plate for your website or web-app",
   "main": "index.mjs",
   "directories": {
@@ -8,11 +8,7 @@
   },
   "type": "module",
   "scripts": {
-    "serve": "fastify start test/serve.mjs --port 4000 --debug",
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "dev": "vite --debug --port 4000 --host",
-    "build": "vite build --debug --sourcemap inline",
-    "preview": "vite preview --debug --sourcemap inline"
+    "serve": "fastify start test/serve.mjs --port 4000 --debug"
   },
   "repository": {
     "type": "git",
@@ -38,17 +34,15 @@
   },
   "homepage": "https://github.com/BlazerNEO/BTyped2#readme",
   "dependencies": {
+    "@petamoriken/float16": "^3.8.1"
+  },
+  "devDependencies": {
     "@fastify/autoload": "^5.7.1",
     "@fastify/cors": "^8.4.0",
     "@fastify/static": "^6.11.2",
     "@gluon-framework/gluon": "^0.14.0",
-    "@petamoriken/float16": "^3.8.1",
-    "cbor-x": "^1.5.4",
-    "fastify": "^4.23.2",
-    "jsox": "^1.2.118"
-  },
-  "devDependencies": {
     "@rollup/plugin-terser": "^0.4.3",
+    "fastify": "^4.23.2",
     "lightningcss": "^1.21.5",
     "postcss": "^8.4.27",
     "pug": "^3.0.2",
