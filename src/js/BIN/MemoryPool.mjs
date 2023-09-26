@@ -20,6 +20,8 @@
     }
 }*/
 
+import { DataViewWrap } from "../Utils/Utils.mjs";
+
 // are basis of any decoders or encoders...
 export default class MemoryPool {
     #registry = null;
@@ -122,7 +124,7 @@ export default class MemoryPool {
         // TODO: fix memory micro-leak
         const codec = $c;//(await (this.#codecs?.[$c])) || $c;
         const _val_ = codec._calloc(1, TA.BYTES_PER_ELEMENT||1);//InputData
-        const _ptr_ = ()=>(new DataView(codec.HEAP8.buffer, codec.HEAP8.byteOffset));//new Proxy(codec, new MemoryHandler({$ptr: _val_, $typed: TA, $length: length}));//new TA(codec.HEAP8.buffer, codec.HEAP8.byteOffset + _val_, 1);
+        const _ptr_ = ()=>(new DataViewWrap(codec.HEAP8.buffer, codec.HEAP8.byteOffset));//new Proxy(codec, new MemoryHandler({$ptr: _val_, $typed: TA, $length: length}));//new TA(codec.HEAP8.buffer, codec.HEAP8.byteOffset + _val_, 1);
         _ptr_().setUint32(_val_, what?.byteOffset ?? what);
         this.#registry.register(_ptr_, {"$ptr": _val_, "$codec": $c });
         return [_ptr_, _val_, 1];
@@ -132,14 +134,14 @@ export default class MemoryPool {
     $calloc($c, length = 4, TA = Uint8Array) {
         const codec = $c;//(await (this.#codecs?.[$c])) || $c;
         const _val_ = codec._calloc(1, (length||4)*(TA.BYTES_PER_ELEMENT||1));
-        const _ptr_ = ()=>(new DataView(codec.HEAP8.buffer, codec.HEAP8.byteOffset));//new Proxy(codec, new MemoryHandler({$ptr: _val_, $typed: TA, $length: length}));//new TA(codec.HEAP8.buffer, codec.HEAP8.byteOffset + _val_, (length||4));
+        const _ptr_ = ()=>(new DataViewWrap(codec.HEAP8.buffer, codec.HEAP8.byteOffset));//new Proxy(codec, new MemoryHandler({$ptr: _val_, $typed: TA, $length: length}));//new TA(codec.HEAP8.buffer, codec.HEAP8.byteOffset + _val_, (length||4));
         this.#registry.register(_ptr_, {"$ptr": _val_, "$codec": $c });
         return [_ptr_, _val_, length];
     }
 
     //
     $u32($c, $ptr) {
-        return $ptr?.[0] ?? (new DataView($c.HEAP8.buffer, $c.HEAP8.byteOffset + $ptr).getUint32(0, true));
+        return $ptr?.[0] ?? (new DataViewWrap($c.HEAP8.buffer, $c.HEAP8.byteOffset + $ptr).getUint32(0, true));
     }
 
     //

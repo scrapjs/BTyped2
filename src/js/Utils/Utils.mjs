@@ -6,10 +6,33 @@ import {
 } from "/@petamoriken/float16/browser/float16.mjs";
 
 //
-DataView.prototype.getFloat16 = function (...$args) { return getFloat16(this, ...$args); };
-DataView.prototype.setFloat16 = function (...$args) { return setFloat16(this, ...$args); };
+//DataView.prototype.getFloat16 = function (...$args) { return getFloat16(this, ...$args); };
+//DataView.prototype.setFloat16 = function (...$args) { return setFloat16(this, ...$args); };
 Math.hfround = hfround;
 Math.f16round = f16round;
+
+//
+const DataViewHandle = {
+    //
+    construct($I, $A, $T) {
+        return new Proxy(Reflect.construct($I, $A, $T), DataViewHandle);
+    },
+
+    //
+    get($I, $N, $R) {
+        if ($N == "getFloat16") { return getFloat16.bind($I, $I); };
+        if ($N == "setFloat16") { return setFloat16.bind($I, $I); };
+        const $fn = Reflect.get($I, $N, $R);
+        return typeof $fn == "function" ? $fn.bind($I) : $fn;
+    },
+
+    //
+    ownKeys(...$args) { return Reflect.ownKeys(...$args); },
+    has(...$args) { return Reflect.has(...$args); }
+};
+
+// more safer way, don't flame on DataView itself!
+export const DataViewWrap = new Proxy(DataView, DataViewHandle);
 
 // avoid limitation
 const _isView_ = ArrayBuffer.isView;

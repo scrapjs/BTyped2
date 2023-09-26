@@ -1,4 +1,4 @@
-import { CStructs, CTypes, AsInt } from "../Utils/Utils.mjs";
+import { CStructs, CTypes, AsInt, DataViewWrap } from "../Utils/Utils.mjs";
 import ProxyHandle from "./ProxyHandle.mjs";
 
 //
@@ -103,7 +103,7 @@ export class ViewUtils {
         // getting an member type
         $T ??= this.$layout.$typed;
         if (typeof $T == "string") {
-            const $target = (this.$target instanceof DataView) ? this.$target : new DataView(this.$target, 0);
+            const $target = (this.$target instanceof DataView || this.$target instanceof DataViewWrap) ? this.$target : new DataViewWrap(this.$target, 0);
             const $getter = "get" + ($T.includes?.("int64") ? "Big" : "") + ($T.charAt(0).toUpperCase() + $T.slice(1));
 
             //
@@ -132,7 +132,7 @@ export class ViewUtils {
         if (typeof $member == "number" || typeof $member == "bigint")
         {   // set primitive
             if (typeof $T == "string" || $T == "*") {
-                const $target = (this.$target instanceof DataView) ? this.$target : new DataView(this.$target, 0);
+                const $target = (this.$target instanceof DataView || this.$target instanceof DataViewWrap) ? this.$target : new DataViewWrap(this.$target, 0);
                 const $setter = "set" + ($T.includes("int64") ? "Big" : "") + ($T.charAt(0).toUpperCase() + $T.slice(1));
 
                 //
