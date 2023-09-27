@@ -1,11 +1,8 @@
 {
-  "name": "btyped2",
-  "version": "2.1.0",
+  "name": "@bz0/btyped2",
+  "version": "2.1.1a",
   "description": "New base plate for your website or web-app",
-  "main": "index.mjs",
-  "directories": {
-    "lib": "lib"
-  },
+  "main": "src/index.mjs",
   "type": "module",
   "scripts": {
     "serve": "fastify start test/serve.mjs --port 4000 --debug"
@@ -15,17 +12,13 @@
     "url": "git+https://github.com/BlazerNEO/BTyped2.git"
   },
   "keywords": [
-    "plate",
-    "base",
-    "index",
-    "html",
-    "js",
-    "css",
-    "sanitizer",
+    "struct",
+    "typed",
     "utils",
-    "basic",
-    "basis",
-    "SDK"
+    "library",
+    "wrapper",
+    "fastify",
+    "js"
   ],
   "author": "user-404",
   "license": "MIT",
