@@ -1,0 +1,10 @@
+{
+    "imports": {
+       "/cbor-x/": "./node_modules/cbor-x/",
+       "/@petamoriken/": "./node_modules/@petamoriken/",
+       "/src/": "./src/",
+       "/test/": "./test/",
+       "/deps/": "./deps/",
+       "/BTyped2/": "./deps/BTyped2/"
+    }
+}

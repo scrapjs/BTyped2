@@ -27,7 +27,7 @@
   },
   "homepage": "https://github.com/BlazerNEO/BTyped2#readme",
   "dependencies": {
-    "@petamoriken/float16": "^3.8.1"
+    "@petamoriken/float16": "^3.8.4"
   },
   "devDependencies": {
     "@fastify/autoload": "^5.7.1",
