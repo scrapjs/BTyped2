@@ -52,7 +52,7 @@ export class BasicLayout {
 
 //
 export default class BasicView extends ViewUtils {
-    constructor(layout, target, byteOffset = 0, _ = 1) {
+    constructor(layout, target, byteOffset = 0, _ = false) {
         super(layout, target, byteOffset, _);
     }
 
