@@ -1,6 +1,6 @@
 {
   "name": "@bz0/btyped2",
-  "version": "2.1.1a",
+  "version": "2.1.2a",
   "description": "New base plate for your website or web-app",
   "main": "src/index.mjs",
   "type": "module",
