@@ -20,6 +20,7 @@
 - **Full support for Deno, Bun, NodeJS.**
 - Less hardware dependency, native byte-swap support.
 - Probably, full [Civet](https://github.com/DanielXMoore/Civet) support.
+- Probably, full [JSOX](https://github.com/d3x0r/JSOX) or [CBOR-X](https://github.com/kriszyp/cbor-x) support.
 
 ### 🤔 Why? 🤔
 
