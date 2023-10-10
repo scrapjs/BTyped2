@@ -1,6 +1,6 @@
 import ProxyHandle from "./ProxyHandle.mjs";
 import { AsBigInt, AsInt, CTypes, CStructs, AddressOf } from "../Utils/Utils.mjs";
-import { Float16Array } from "/@petamoriken/float16/browser/float16.mjs";
+import { Float16Array } from "@petamoriken/float16"; // TODO! add source maps to test cases
 import ArrayView from "./ArrayView.mjs";
 import { ViewUtils } from "./StructType.mjs";
 

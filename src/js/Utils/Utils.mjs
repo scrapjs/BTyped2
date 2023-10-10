@@ -3,7 +3,7 @@ import {
     Float16Array, isFloat16Array, isTypedArray,
     getFloat16, setFloat16,
     hfround, f16round,
-} from "/@petamoriken/float16/browser/float16.mjs";
+} from "@petamoriken/float16";
 
 //
 //DataView.prototype.getFloat16 = function (...$args) { return getFloat16(this, ...$args); };

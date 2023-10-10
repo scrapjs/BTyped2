@@ -29,7 +29,7 @@ export default class ProxyHandle {
     get(target, name, rec) {
         //if (!(target instanceof DataView)) { throw Error("Proxied not DataView..."); };
         const $layout = this.#layout$;
-        const $view = target.$isView ? target : $layout.$view(target);
+        const $view = target.$isView ? target : $layout;//$layout.$view(target);
         if (name == "$initial") { return new Proxy($view.$initial, this); };
         if (name == "$length") { return $view.$length; };
         if (name == "$buffer" || name == "$target") { return $view.$target; };

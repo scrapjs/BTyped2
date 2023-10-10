@@ -1,4 +1,4 @@
-import { CStructs, CTypes, AsInt, DataViewWrap } from "../Utils/Utils.mjs";
+import { CStructs, CTypes, AsInt, DataViewWrap, AsBigInt, AddressOf } from "../Utils/Utils.mjs";
 import ProxyHandle from "./ProxyHandle.mjs";
 
 //
