@@ -17,7 +17,9 @@
 - Full support of UTF-8, UTF-16, etc.
 - Full support for base64 representations.
 - Full support for little or big endian exactly.
+- **Full support for Deno, Bun, NodeJS.**
 - Less hardware dependency, native byte-swap support.
+- Probably, full Civet support.
 
 ### 🤔 Why? 🤔
 
