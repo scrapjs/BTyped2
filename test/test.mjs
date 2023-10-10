@@ -1,4 +1,4 @@
-import * as B from "../src/index.mjs";
+import * as B from "../src/js/index.mjs";
 
 //
 const Test = B.StructWrap(new B.StructLayout("Test", [

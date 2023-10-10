@@ -2,7 +2,7 @@
   "name": "@bz0/btyped2",
   "version": "2.1.2a",
   "description": "New base plate for your website or web-app",
-  "main": "src/index.mjs",
+  "main": "src/js/index.mjs",
   "type": "module",
   "scripts": {
     "serve": "fastify start test/serve.mjs --port 4000 --debug"
