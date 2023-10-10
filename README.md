@@ -19,7 +19,7 @@
 - Full support for little or big endian exactly.
 - **Full support for Deno, Bun, NodeJS.**
 - Less hardware dependency, native byte-swap support.
-- Probably, full Civet support.
+- Probably, full [Civet](https://github.com/DanielXMoore/Civet) support.
 
 ### 🤔 Why? 🤔
 
