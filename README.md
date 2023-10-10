@@ -4,14 +4,20 @@
 
 🪖 A typed structure library (mostly, for NodeJS)... 🪖
 
-### 📦 `v2.1` teaser? 📦
+### 📦 `v2.1` - what we done? 📦
 
-I have some plans about next-gen update for BTyped2 `v2.1`.
+- Group or SOA accessor or selector.
+- Split types into basic types, arrays, and structures.
+- Fixed some issues.
 
-- Memory pool, manager or allocator.
-- Structure of arrays support (SOA).
-- New basic types refs (`f32`,`u8`…).
-- Tuple and vector math support. 
+### 📦 `v2.2` teaser? 📦
+
+- Deep `BString` integration.
+- Full support for **strings**.
+- Full support of UTF-8, UTF-16, etc.
+- Full support for base64 representations.
+- Full support for little or big endian exactly.
+- Less hardware dependency, native byte-swap support.
 
 ### 🤔 Why? 🤔
 
