@@ -40,7 +40,7 @@ export default class ProxyHandle {
         if (name == "$auto") { return $layout.$auto; };
 
         // internal functors
-        if (name == "$select") { return $view.$select?.bind?.($view); };
+        if (name == "$claim") { return $view.$claim?.bind?.($view); };
         if (name == "$set") { return $view.$set?.bind?.($view); };
         if (name == "$get") { return $view.$get?.bind?.($view); };
 

@@ -76,7 +76,7 @@ export class ViewUtils {
     get $buffer() { return (this.$target?.buffer || this.$target); };
 
     // sort of legacy...
-    $select($offset = 0, $length = 1) {
+    $claim($offset = 0, $length = 1) {
         return new this.$layout.$opt(this.$buffer, $offset + this.$byteOffset + (this.$target?.byteOffset || 0), Math.min($length, this.$length - ($offset/this.$layout.$byteLength)));
     }
 
@@ -119,8 +119,8 @@ export class ViewUtils {
         const $obj = this.$ref($offset, $T, true, $length);
 
         // optimized operation for array-view
-        if ((Array.isArray($member) || ArrayBuffer.isView($member)) && typeof $obj?.$select == "function") {
-            $obj["*"].set($member); return true;
+        if ((Array.isArray($member) || ArrayBuffer.isView($member)) && typeof $obj?.$claim == "function") {
+            $obj.$claim(0, $member.length).set($member); return true;
         }
 
         //
