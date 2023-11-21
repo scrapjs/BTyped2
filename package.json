@@ -30,11 +30,12 @@
     "@petamoriken/float16": "^3.8.4"
   },
   "devDependencies": {
+    "@jridgewell/sourcemap-codec": "^1.4.15",
     "@fastify/autoload": "^5.7.1",
     "@fastify/cors": "^8.4.0",
     "@fastify/static": "^6.11.2",
     "@gluon-framework/gluon": "^0.14.0",
-    "@rollup/plugin-terser": "^0.4.3",
+    "@rollup/plugin-terser": "^0.4.4",
     "fastify": "^4.23.2",
     "lightningcss": "^1.21.5",
     "postcss": "^8.4.27",
